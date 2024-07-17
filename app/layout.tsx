@@ -1,3 +1,5 @@
+import './globals.css';
+
 export const metadata = {
 	title: 'Shop',
 	description: 'E-commerce project',

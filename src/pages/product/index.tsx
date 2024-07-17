@@ -1,3 +1,5 @@
+import { ProductsContainer } from './ui/ProductsContainer';
+
 export const Product = () => {
-	return <div>Product</div>;
+	return <ProductsContainer />;
 };
