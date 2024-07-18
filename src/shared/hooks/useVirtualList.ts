@@ -20,11 +20,11 @@ export const useVirtualList = (items: any[], itemHeight: number) => {
 		if (listRef.current) {
 			setListHeight(listRef.current.clientHeight);
 		}
-	}, [listRef]);
+	}, []);
 
 	useEffect(() => {
 		updateVisibleItems();
-	}, [listScrollTop, listHeight, items]);
+	}, [listScrollTop, listHeight]);
 
 	const handleScroll = () => {
 		if (listRef.current) {
