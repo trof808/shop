@@ -1,8 +1,10 @@
+import { memo } from 'react';
+
 interface Props {
 	product: any;
 }
 
-export const ProductsItem = ({ product }: Props) => {
+export const ProductsItem = memo(({ product }: Props) => {
 	return (
 		<div>
 			<div key={product.id}>
@@ -11,4 +13,6 @@ export const ProductsItem = ({ product }: Props) => {
 			</div>
 		</div>
 	);
-};
+});
+
+ProductsItem.displayName = 'ProductsItem';
