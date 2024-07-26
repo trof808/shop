@@ -1,14 +1,14 @@
 import { host } from '@/shared/constants';
 import axios from 'axios';
 
-export abstract class ApiService<T> {
+export abstract class ApiService {
 	private baseUrl: string;
 
 	constructor(baseUrl: string) {
-		this.baseUrl = `${host}/${baseUrl}`;
+		this.baseUrl = `${host}${baseUrl}`;
 	}
 
-	public async get({
+	public async get<T>({
 		path = '',
 		params = {},
 	}: {
@@ -22,7 +22,7 @@ export abstract class ApiService<T> {
 		});
 	}
 
-	public async create(
+	public async create<T>(
 		path: string = '',
 		body: Record<string, any>
 	): Promise<T> {
@@ -33,7 +33,7 @@ export abstract class ApiService<T> {
 		});
 	}
 
-	public async update(
+	public async update<T>(
 		path: string = '',
 		payload: Record<string, any>
 	): Promise<T> {
@@ -45,7 +45,7 @@ export abstract class ApiService<T> {
 		});
 	}
 
-	public async delete(path: string = ''): Promise<T> {
+	public async delete<T>(path: string = ''): Promise<T> {
 		return await axios<ResponseType>({
 			method: 'DELETE',
 			url: `${this.baseUrl}/${path}`,

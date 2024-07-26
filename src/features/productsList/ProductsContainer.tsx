@@ -1,12 +1,14 @@
+'use client';
+
 import { ProductsVirtualList } from './ProductsVirtualList';
+import { useGetProducts } from './hooks/useGetProducts';
 
 export const ProductsContainer = () => {
-	// TODO: mock-data
-	const products = Array.from({ length: 1000 }, (_, index) => ({
-		id: index,
-		name: `Product ${index}`,
-		price: (Math.random() * 100).toFixed(2),
-	}));
+	const { products, isLoading } = useGetProducts();
+
+	if (isLoading) {
+		return 'loading...';
+	}
 
 	return <ProductsVirtualList products={products} />;
 };
