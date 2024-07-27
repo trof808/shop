@@ -2,7 +2,7 @@ import { APIProcessableError } from '@/shared/errors/api/ApiProcessableError';
 import { create } from 'zustand';
 import { productsApiService } from '../services/productsApiService';
 import { Product } from '../types';
-import { productStoreMapping } from './mapping/productsMapping';
+import { productMapping } from './mapping/productsMapping';
 
 interface ProductsState {
 	products: Product[];
@@ -66,7 +66,7 @@ export const useProductsStore = create<ProductsState>(set => ({
 		productsApiService
 			.getProducts()
 			.then(resp => {
-				set({ products: productStoreMapping(resp) });
+				set({ products: productMapping(resp) });
 			})
 			.catch(error => {
 				throw new APIProcessableError(error, 'Error fetching products');
