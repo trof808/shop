@@ -3,7 +3,7 @@ import { checkStringField } from '@/shared/utils/checkStringField';
 import { path } from 'ramda';
 import { Product } from '../../types';
 
-export const productStoreMapping = (products: Product[]) => {
+export const productMapping = (products: Product[]) => {
 	if (!Array.isArray(products)) {
 		return [];
 	}
