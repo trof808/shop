@@ -46,9 +46,9 @@ export abstract class ApiService {
 	}
 
 	public async delete<T>(path: string = ''): Promise<T> {
-		return await axios<ResponseType>({
+		return (await axios({
 			method: 'DELETE',
 			url: `${this.baseUrl}/${path}`,
-		});
+		})) as unknown as T;
 	}
 }

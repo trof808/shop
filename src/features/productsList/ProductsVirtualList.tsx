@@ -2,21 +2,36 @@
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
 import { ProductsItem } from './ProductsItem';
+import { SettedProducts } from './types';
 
 interface Props {
-	products: any[];
+	products: SettedProducts[];
+	addToBasketAction: (id: number) => void;
+	removeFromBasketAction: (id: number) => void;
 }
 
-export const ProductsVirtualList = ({ products }: Props) => {
+export const ProductsVirtualList = ({
+	products,
+	addToBasketAction,
+	removeFromBasketAction,
+}: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
-		useVirtualList(products, 48);
+		useVirtualList(products, 120);
 
 	return (
-		<div ref={listRef} className='h-[200px] overflow-y-auto'>
+		<div ref={listRef} className='h-[700px] overflow-y-auto'>
 			<div {...containerProps}>
-				<div {...wrapperProps}>
+				<div
+					{...wrapperProps}
+					className='grid gap-2 grid-cols-1 justify-items-center'
+				>
 					{visibleItems.map(product => (
-						<ProductsItem key={product.id} product={product} />
+						<ProductsItem
+							key={product.id}
+							product={product}
+							addToBasketAction={addToBasketAction}
+							removeFromBasketAction={removeFromBasketAction}
+						/>
 					))}
 				</div>
 			</div>

@@ -4,6 +4,8 @@ export interface Product {
 	description: string;
 	price: { amount: number; currency: string };
 	categoryId: number;
-	availableCount: number;
-	properties: { title: string; value: string }[];
+}
+
+export interface SettedProducts extends Product {
+	countInBasket: number;
 }

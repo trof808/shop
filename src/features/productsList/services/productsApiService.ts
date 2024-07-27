@@ -15,8 +15,6 @@ class ProductsApiService extends ApiService {
 				currency: 'USD',
 			},
 			categoryId: Math.floor(Math.random() * 10),
-			availableCount: Math.floor(Math.random() * 100),
-			properties: [{ title: 'Property 1', value: 'Value 1' }],
 		}));
 
 		// return super.get({ path: 'products' });
