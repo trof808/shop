@@ -18,6 +18,7 @@ interface ProductsState {
 export const useProductsStore = create<ProductsState>(set => ({
 	products: [],
 	isLoading: false,
+	// Лучше сделать Basket store чтобы разделить ответственность за хренение данных
 	selectedProductsIds: {},
 	selectedTotalPrice: 0,
 

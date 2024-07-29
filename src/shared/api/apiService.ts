@@ -22,6 +22,8 @@ export abstract class ApiService {
 		});
 	}
 
+	// Тут можно прокидывать 2 дженерика
+	// create<ResponseType, PayloadType>
 	public async create<T>(
 		path: string = '',
 		body: Record<string, any>
@@ -33,6 +35,8 @@ export abstract class ApiService {
 		});
 	}
 
+	// Тут можно прокидывать 2 дженерика
+	// create<ResponseType, PayloadType>
 	public async update<T>(
 		path: string = '',
 		payload: Record<string, any>

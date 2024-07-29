@@ -5,6 +5,8 @@ const PRODUCTS_URL_API = '';
 
 class ProductsApiService extends ApiService {
 	// TODO: mock data
+	// лучше описать свой тип для интерфейса Api и не переиспользовать его в приложении
+	// Можно сделать рядом файл productsService.types.ts
 	public async getProducts(): Promise<Product[]> {
 		return Array.from({ length: 1000 }, (_, index) => ({
 			id: index,

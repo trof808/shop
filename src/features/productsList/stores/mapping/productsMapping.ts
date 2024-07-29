@@ -3,6 +3,7 @@ import { checkStringField } from '@/shared/utils/checkStringField';
 import { path } from 'ramda';
 import { Product } from '../../types';
 
+// Хорошее решение по обработке ответа API
 export const productMapping = (products: Product[]) => {
 	if (!Array.isArray(products)) {
 		return [];
@@ -10,7 +11,8 @@ export const productMapping = (products: Product[]) => {
 
 	return products.map(i => {
 		return {
-			id: checkNumberField(path(['id'], i)) as number,
+			// в принципе ожидается, что id будет всегда
+			id: checkNumberField(path(['id'], i)) as number, // Директиву as лучше избегать
 			title: checkStringField(path(['title'], i)),
 			description: checkStringField(path(['description'], i)),
 			price: {
@@ -21,3 +23,6 @@ export const productMapping = (products: Product[]) => {
 		};
 	});
 };
+
+// Тут мы обсудили, что правила валидации полей сильно зависят от контекста бизнесового и специфика работы бэкенда
+// Паттерн который ты применил хорош, сами правила валидации, что делать возвращать ошибку или null это уже on depends

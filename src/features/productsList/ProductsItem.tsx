@@ -8,6 +8,8 @@ interface Props {
 	removeFromBasketAction: (id: number) => void;
 }
 
+// Тут при скроле много рендерингов
+// Можно более детально декомпозировать ProductItem по компонентам (но это просто лишний раз рекомендация)
 export const ProductsItem = ({
 	product,
 	addToBasketAction,

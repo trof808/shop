@@ -22,6 +22,20 @@ export const useGetProducts = () => {
 		getProductsAction();
 	}, [getProductsAction]);
 
+	// Это можно в useMemo как пересчитываемое значение сделать
+	// Лучше избавляться от большого количества useEffect в одном месте
+	// их порядок сложно контролировать и не понятно кто за что отвечает
+
+	// const products = useMemo(() => {
+	// 	if (productsList.length) {
+	// 		return productsList.map(item => ({
+	// 			...item,
+	// 			countInBasket: selectedProductsIds[item.id] || 0,
+	// 		}));
+	// 	}
+	// 	return [];
+	// }, [selectedProductsIds, productsList]);
+
 	useEffect(() => {
 		if (productsList.length) {
 			const settedList = productsList.map(item => ({
