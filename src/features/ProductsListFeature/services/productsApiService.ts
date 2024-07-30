@@ -1,11 +1,11 @@
 import { ApiService } from '@/shared/api/apiService';
-import { Product } from '../types';
+import { APIProduct } from './productsApiService.types';
 
 const PRODUCTS_URL_API = '';
 
 class ProductsApiService extends ApiService {
 	// TODO: mock data
-	public async getProducts(): Promise<Product[]> {
+	public async getProducts(): Promise<APIProduct[]> {
 		return Array.from({ length: 1000 }, (_, index) => ({
 			id: index,
 			title: `Product ${index}`,

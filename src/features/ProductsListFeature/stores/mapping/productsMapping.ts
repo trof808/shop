@@ -1,7 +1,7 @@
-import { checkNumberField } from '@/shared/utils/checkNumberField';
-import { checkStringField } from '@/shared/utils/checkStringField';
 import { path } from 'ramda';
 import { Product } from '../../types';
+import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
+import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 
 export const productMapping = (products: Product[]) => {
 	if (!Array.isArray(products)) {
@@ -10,14 +10,14 @@ export const productMapping = (products: Product[]) => {
 
 	return products.map(i => {
 		return {
-			id: checkNumberField(path(['id'], i)) as number,
+			id: checkNumberField(path(['id'], i)),
 			title: checkStringField(path(['title'], i)),
 			description: checkStringField(path(['description'], i)),
 			price: {
-				amount: checkNumberField(path(['id'], i)) as number,
+				amount: checkNumberField(path(['price', 'amount'], i)),
 				currency: checkStringField(path(['price', 'currency'], i)),
 			},
-			categoryId: checkNumberField(path(['categoryId'], i)) as number,
+			categoryId: checkNumberField(path(['categoryId'], i)),
 		};
 	});
 };

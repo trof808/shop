@@ -1,13 +1,13 @@
 'use client';
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
-import { ProductsItem } from './ProductsItem';
-import { SettedProducts } from './types';
+import { ProductsItem } from './ProductsItem/ProductsItem';
+import { Product, SettedProducts } from './types';
 
 interface Props {
 	products: SettedProducts[];
-	addToBasketAction: (id: number) => void;
-	removeFromBasketAction: (id: number) => void;
+	addToBasketAction: (product: Product) => void;
+	removeFromBasketAction: (product: Product) => void;
 }
 
 export const ProductsVirtualList = ({

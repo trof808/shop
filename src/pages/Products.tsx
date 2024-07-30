@@ -1,5 +1,5 @@
-import { ProductsContainer } from '@/features/productsList/ProductsContainer';
+import { ProductsListFeature } from '@/features/ProductsListFeature/ProductsListFeature';
 
 export const Products = () => {
-	return <ProductsContainer />;
+	return <ProductsListFeature />;
 };

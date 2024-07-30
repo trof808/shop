@@ -8,13 +8,13 @@ export abstract class ApiService {
 		this.baseUrl = `${host}${baseUrl}`;
 	}
 
-	public async get<T>({
+	public async get<ResponseType>({
 		path = '',
 		params = {},
 	}: {
 		path?: string;
 		params?: Record<string, any>;
-	} = {}): Promise<T> {
+	} = {}): Promise<ResponseType> {
 		return await axios({
 			method: 'GET',
 			url: `${this.baseUrl}${path}`,
@@ -22,10 +22,10 @@ export abstract class ApiService {
 		});
 	}
 
-	public async create<T>(
+	public async create<ResponseType, PayloadType>(
 		path: string = '',
-		body: Record<string, any>
-	): Promise<T> {
+		body: PayloadType
+	): Promise<ResponseType> {
 		return await axios({
 			method: 'POST',
 			data: body,
@@ -33,10 +33,10 @@ export abstract class ApiService {
 		});
 	}
 
-	public async update<T>(
+	public async update<ResponseType, PayloadType>(
 		path: string = '',
-		payload: Record<string, any>
-	): Promise<T> {
+		payload: PayloadType
+	): Promise<ResponseType> {
 		const bodyParams = JSON.stringify(payload);
 		return await axios({
 			method: 'PUT',
@@ -45,10 +45,10 @@ export abstract class ApiService {
 		});
 	}
 
-	public async delete<T>(path: string = ''): Promise<T> {
+	public async delete<ResponseType>(path: string = ''): Promise<ResponseType> {
 		return (await axios({
 			method: 'DELETE',
 			url: `${this.baseUrl}/${path}`,
-		})) as unknown as T;
+		})) as unknown as ResponseType;
 	}
 }

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useVirtualList = (items: any[], itemHeight: number) => {
+export const useVirtualList = <ItemsType>(
+	items: ItemsType[],
+	itemHeight: number
+) => {
 	const [listScrollTop, setListScrollTop] = useState(0);
 	const [listHeight, setListHeight] = useState(0);
 	const [visibleItems, setVisibleItems] = useState(items.slice(0, 0));

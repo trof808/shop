@@ -1,9 +1,10 @@
 'use client';
 
+import { BasketButtonFeature } from '../BasketButtonFeature/BasketButtonFeature';
 import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetProducts } from './hooks/useGetProducts';
 
-export const ProductsContainer = () => {
+export const ProductsListFeature = () => {
 	const {
 		products,
 		isLoading,
@@ -24,7 +25,7 @@ export const ProductsContainer = () => {
 				removeFromBasketAction={removeFromBasketAction}
 			/>
 
-			<p>totalPice: {totalPrice}</p>
+			<BasketButtonFeature totalPrice={totalPrice} />
 		</>
 	);
 };
