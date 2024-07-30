@@ -3,5 +3,5 @@ interface Props {
 }
 
 export const BasketButtonFeature = ({ totalPrice }: Props) => {
-	return <p>totalPice: {totalPrice}</p>;
+	return <p>totalPrice: {totalPrice}</p>;
 };
