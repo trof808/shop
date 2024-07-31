@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { productsStore } from '../stores/productsStore';
 import { basketStore } from '../stores/basketStore';
 
