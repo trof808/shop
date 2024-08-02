@@ -1,6 +1,7 @@
 'use client';
 
 import { BasketButtonFeature } from '../BasketButtonFeature/BasketButtonFeature';
+import { LinkToFiltersButton } from '../LinkToFiltersButton/LinkToFiltersButton';
 import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetProducts } from './hooks/useGetProducts';
 
@@ -19,6 +20,8 @@ export const ProductsListFeature = () => {
 
 	return (
 		<>
+			<LinkToFiltersButton />
+
 			<ProductsVirtualList
 				products={products}
 				addToBasketAction={addToBasketAction}
