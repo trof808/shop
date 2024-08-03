@@ -1,9 +1,10 @@
 import { path } from 'ramda';
-import { Product } from '../../types';
 import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
+import { APIProduct } from '../../services/productsApiService.types';
+import { Product } from '../../types';
 
-export const productMapping = (products: Product[]) => {
+export const productMapping = (products: APIProduct[]): Product[] => {
 	if (!Array.isArray(products)) {
 		return [];
 	}

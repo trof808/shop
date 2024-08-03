@@ -1,5 +1,5 @@
 export interface APIProductsFilters {
-	id: number;
+	id: string;
 	title: string;
 	properties: {
 		id: number;

@@ -1,14 +1,14 @@
 import { ApiService } from '@/shared/api/apiService';
 import { APIProductsFilters } from './productsFiltersApiService.types';
 
-const PRODUCTS_URL_API = '';
+const PRODUCTS_FILTERS_URL_API = '';
 
 class ProductsFiltersApiService extends ApiService {
 	// TODO: mock data
 	public async getProductsFilters(): Promise<APIProductsFilters[]> {
 		return [
 			{
-				id: 1,
+				id: 'categories',
 				title: 'Категории',
 				properties: [
 					{ id: 1, title: 'Электроника', type: 'checkbox' },
@@ -17,7 +17,7 @@ class ProductsFiltersApiService extends ApiService {
 				],
 			},
 			{
-				id: 2,
+				id: 'brend',
 				title: 'Бренд',
 				properties: [
 					{ id: 1, title: 'Apple', type: 'checkbox' },
@@ -26,7 +26,7 @@ class ProductsFiltersApiService extends ApiService {
 				],
 			},
 			{
-				id: 3,
+				id: 'color',
 				title: 'Цвет',
 				properties: [
 					{ id: 1, title: 'Красный', type: 'checkbox' },
@@ -36,10 +36,10 @@ class ProductsFiltersApiService extends ApiService {
 			},
 		];
 
-		// return super.get({ path: 'products' });
+		// return super.get({ path: 'categories' });
 	}
 }
 
 export const productsFiltersApiService = new ProductsFiltersApiService(
-	PRODUCTS_URL_API
+	PRODUCTS_FILTERS_URL_API
 );

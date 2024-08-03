@@ -1,13 +1,15 @@
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface Props {
 	href: string;
 }
 
 export const LinkBackButton = ({ href = '/' }: Props) => {
-	return (
-		<Link href={href}>
-			<button>{'<'}</button>
-		</Link>
-	);
+	const router = useRouter();
+
+	const handleBackButtonClick = () => {
+		router.push(href + location.search);
+	};
+
+	return <button onClick={handleBackButtonClick}>{'<'}</button>;
 };

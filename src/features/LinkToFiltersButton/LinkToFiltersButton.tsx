@@ -1,9 +1,11 @@
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export const LinkToFiltersButton = () => {
-	return (
-		<Link href='/filters'>
-			<button>Перейти к фильтрам</button>
-		</Link>
-	);
+	const router = useRouter();
+
+	const handleBackButtonClick = () => {
+		router.push('/filters' + location.search);
+	};
+
+	return <button onClick={handleBackButtonClick}>Go to the filters</button>;
 };
