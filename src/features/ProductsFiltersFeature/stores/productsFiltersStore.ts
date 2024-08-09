@@ -9,7 +9,7 @@ interface ProductsFiltersState {
 	selectedFilters: Record<string, number[]>;
 	isLoading: boolean;
 
-	saveFiltersToStore: (filters: Record<string, number[]>) => void;
+	updateFilters: (filters: UrlFilter[]) => void;
 	getCategoriesAction: () => void;
 }
 
@@ -18,8 +18,8 @@ export const productsFiltersStore = create<ProductsFiltersState>(set => ({
 	selectedFilters: {},
 	isLoading: false,
 
-	saveFiltersToStore: (filters: Record<string, number[]>) => {
-		set({ selectedFilters: filters });
+	updateFilters: (filters: UrlFilter[]) => {
+		set({ filters: [...filters] });
 	},
 
 	getCategoriesAction: () => {

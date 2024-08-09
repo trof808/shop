@@ -1,38 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { LinkBackButton } from '../LinkBackButton/LinkBackButton';
 import { useGetProductsFilters } from './hooks/useGetProductsFilters';
 
 export const ProductsFiltersFeature = () => {
-	const { filters, selectedFilters, saveFilters } = useGetProductsFilters();
-	const [checkedFilters, setCheckedFilters] = useState<{
-		[filterId: string]: number[];
-	}>(selectedFilters);
+	const { filters, urlFilterManager } = useGetProductsFilters();
 
-	useEffect(() => {
-		setCheckedFilters(selectedFilters);
-	}, [selectedFilters]);
-
-	// const handleCheckboxChange = (filterId: string, propertyId: number) => {
-	// 	setCheckedFilters(prev => {
-	// 		const currentFilterValues = prev[filterId] || [];
-	// 		const isChecked = currentFilterValues.includes(propertyId);
-
-	// 		const updatedFilters = {
-	// 			...prev,
-	// 			[filterId]: isChecked
-	// 				? currentFilterValues.filter(id => id !== propertyId)
-	// 				: [...currentFilterValues, propertyId],
-	// 		};
-
-	// 		if (!updatedFilters[filterId].length) {
-	// 			delete updatedFilters[filterId];
-	// 		}
-
-	// 		return updatedFilters;
-	// 	});
-	// };
+	console.log(filters);
 
 	return (
 		<div>
@@ -48,17 +22,13 @@ export const ProductsFiltersFeature = () => {
 								value={property}
 								checked={filter.isValueChecked(property)}
 								// TODO Нужно обновлять стор
-								onChange={() => filter.setValue(property)}
+								onChange={() => urlFilterManager.setFilter(filter.name, property)}
 							/>
 							{property}
 						</label>
 					))}
 				</div>
 			))}
-
-			{/* {!!Object.keys(checkedFilters).length && (
-				<button onClick={() => saveFilters(checkedFilters)}>Show</button>
-			)} */}
 		</div>
 	);
 };

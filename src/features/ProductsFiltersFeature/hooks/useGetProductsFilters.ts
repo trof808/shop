@@ -1,49 +1,33 @@
 import { useEffect } from 'react';
 import { productsFiltersStore } from '../stores/productsFiltersStore';
-import queryString from 'query-string';
+import { UrlFilterManager } from '@/entities/URlFilter/UrlFilterManager';
 
 export const useGetProductsFilters = () => {
 	const isLoading = productsFiltersStore(state => state.isLoading);
 	const filters = productsFiltersStore(state => state.filters);
-	const selectedFilters = productsFiltersStore(state => state.selectedFilters);
-	const saveFiltersToStore = productsFiltersStore(
-		state => state.saveFiltersToStore
+	const updateFiltersToStore = productsFiltersStore(
+		state => state.updateFilters
 	);
 	const getCategoriesAction = productsFiltersStore(
 		state => state.getCategoriesAction
 	);
 
-	const saveFilters = (templateFilters: Record<string, number[]>) => {
-		// save in the store
-		saveFiltersToStore(templateFilters);
+	const updatePage = (queryParamsString: string) => {
+		window.history.pushState(null, '', queryParamsString);
+	}
 
-		// save in the url
-		const filterUrlParams = `?${queryString.stringify(templateFilters, {
-			arrayFormat: 'bracket',
-		})}`;
-
-		// использовать useRouter
-		window.history.pushState(null, '', filterUrlParams);
-	};
-
-	const saveFiltersFromUrl = () => {
-		const parsedParams = queryString.parse(location.search, {
-			arrayFormat: 'bracket',
-			parseNumbers: true,
-		});
-
-		saveFiltersToStore(parsedParams);
-	};
+	const urlFilterManager = new UrlFilterManager(updateFiltersToStore, updatePage, filters);
+	urlFilterManager.restoreFiltersFromUrl();
 
 	useEffect(() => {
 		getCategoriesAction();
-		saveFiltersFromUrl();
 	}, [getCategoriesAction]);
+
+	console.log(filters);
 
 	return {
 		filters,
-		selectedFilters,
 		isLoading,
-		saveFilters,
+		urlFilterManager
 	};
 };

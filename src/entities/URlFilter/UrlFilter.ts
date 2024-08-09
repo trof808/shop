@@ -1,5 +1,16 @@
 type UrlFilterValue = string | number;
 
+/**
+ * Что умеет UrlFilter?
+ * 
+ * 1. Устанавливать активное состояние фильтра
+ * 2. Проверять валидность фильтра, который пытаются установить
+ * 3. Умеет формировать то, как фильтр будет выглядет в url
+ * 4. Умеет сбрасывать свое состояние
+ * 5. Умеет парсить себя из url вида в обычный js
+ * 
+ * 6. Но ничего не знает о том где он храниться и как туда попадать (стейты, сторы, страницы и тд)
+ */
 export class UrlFilter {
     name;
     availableValues;
@@ -20,16 +31,26 @@ export class UrlFilter {
         this.setUrlValue();
     }
 
-    setValue(value: UrlFilterValue) {
-        if (!this.availableValues.includes(value)) {
-            throw new Error(`Невалидное значение для фильтра ${this.name}`);
-        }
-        if(this.currentValue.includes(value)) {
-            this.currentValue = this.currentValue.filter(item => item!== value);
+    setValue(value: UrlFilterValue | UrlFilterValue[]) {
+        if (Array.isArray(value)) {
+            const validatedValues = value.filter(v => this.availableValues.includes(v));
+            this.currentValue = validatedValues;
         } else {
-            this.currentValue.push(value);
+            if (!this.availableValues.includes(value)) {
+                throw new Error(`Невалидное значение для фильтра ${this.name}`);
+            }
+            if(this.currentValue.includes(value)) {
+                this.currentValue = this.currentValue.filter(item => item!== value);
+            } else {
+                this.currentValue.push(value);
+            }
         }
         this.setUrlValue()
+    }
+
+    setValueFormUrl(value: string) {
+        const parsedValue = value.split(this.separator);
+        this.setValue(parsedValue);
     }
 
     resetValue() {
@@ -38,28 +59,17 @@ export class UrlFilter {
     }
 
     setUrlValue() {
-        this.urlValue = this.currentValue.join(this.separator);
+        if (this.hasValue())
+            this.urlValue = `${this.name}=${this.currentValue.join(this.separator)}`;
+        else
+            this.urlValue = '';
     }
+
+    hasValue() {
+        return this.currentValue.length > 0;
+    }
+
     isValueChecked(value: UrlFilterValue): boolean {
         return this.currentValue.includes(value);
     }
 }
-
-// class BooleanUrlFilter extends UrlFilter<true | false> {
-//     constructor(name: string, currentValue: (true | false)[] = []) {
-//         super(name, [true, false], currentValue, '.');
-//     }
-// }
-
-// class DateFilter extends UrlFilter<string> {
-//     constructor(name: string, values: string[], ) {
-//         super(name, values, [], '_');
-//     }
-// }
-
-// class UrlFilterManager {
-//     filters: UrlFilter[] = []
-//     constructor(filters: UrlFilter[]) {
-//         this.filters = filters;
-//     }
-// }
