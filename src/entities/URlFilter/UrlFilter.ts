@@ -25,7 +25,9 @@ export class UrlFilter {
 		separator = '.'
 	) {
 		this.name = name;
-		this.availableValues = [...defaultValue, ...availableValues];
+		this.availableValues = Array.isArray(defaultValue)
+			? [...defaultValue, ...availableValues]
+			: availableValues;
 		this.currentValue = defaultValue;
 		this.separator = separator;
 		this.setUrlValue();
