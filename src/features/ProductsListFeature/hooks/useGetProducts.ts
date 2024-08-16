@@ -4,17 +4,23 @@ import { ProductManager } from '@/entities/Product/ProductManager';
 import { SettedProductsType } from '../types';
 
 export const useGetProducts = () => {
-	const isLoading = productsStore(state => state.isLoading);
+	const status = productsStore(state => state.status);
 	const productsList = productsStore(state => state.products);
 
 	const getProductsAction = productsStore(state => state.getProductsAction);
 	const updateBasket = productsStore(state => state.updateBasket);
 
-	const basketManager = new ProductManager(productsList, updateBasket);
+	const productManager = new ProductManager(productsList, updateBasket);
 
 	useEffect(() => {
 		getProductsAction();
-	}, [getProductsAction]);
+	}, []);
+
+	useEffect(() => {
+		if (status === 'loaded') {
+			productManager.setFromLocalStorage();
+		}
+	}, [status]);
 
 	const products: SettedProductsType[] = useMemo(() => {
 		if (productsList.length) {
@@ -22,8 +28,8 @@ export const useGetProducts = () => {
 				...item.product,
 				countInBasket: item.selectedCount,
 				isCanIncrement: item.isCanIncrement,
-				addToBasketAction: () => basketManager.addToBasket(item),
-				removeFromBasketAction: () => basketManager.removeFromBasket(item),
+				addToBasketAction: () => productManager.addToBasket(item),
+				removeFromBasketAction: () => productManager.removeFromBasket(item),
 			}));
 		}
 
@@ -32,7 +38,7 @@ export const useGetProducts = () => {
 
 	return {
 		products,
-		isLoading,
-		totalPrice: basketManager.totalPriceInBasket,
+		status,
+		totalPrice: productManager.totalPriceInBasket,
 	};
 };

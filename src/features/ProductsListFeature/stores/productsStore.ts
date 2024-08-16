@@ -6,7 +6,7 @@ import { Product } from '@/entities/Product/Product';
 
 interface ProductsState {
 	products: Product[];
-	isLoading: boolean;
+	status: 'idle' | 'loading' | 'loaded' | 'error';
 
 	updateBasket: (product: Product[]) => void;
 	getProductsAction: () => void;
@@ -14,7 +14,7 @@ interface ProductsState {
 
 export const productsStore = create<ProductsState>(set => ({
 	products: [],
-	isLoading: false,
+	status: 'idle',
 	selectedProductsIds: {},
 	selectedTotalPrice: 0,
 
@@ -23,7 +23,7 @@ export const productsStore = create<ProductsState>(set => ({
 	},
 
 	getProductsAction: () => {
-		set({ isLoading: true });
+		set({ status: 'loading' });
 		productsApiService
 			.getProducts()
 			.then(resp => {
@@ -34,8 +34,9 @@ export const productsStore = create<ProductsState>(set => ({
 				set({ products });
 			})
 			.catch(error => {
+				set({ status: 'error' });
 				throw new APIProcessableError(error, 'Error fetching products');
 			})
-			.finally(() => set({ isLoading: false }));
+			.finally(() => set({ status: 'loaded' }));
 	},
 }));

@@ -6,9 +6,9 @@ import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetProducts } from './hooks/useGetProducts';
 
 export const ProductsListFeature = () => {
-	const { products, isLoading, totalPrice } = useGetProducts();
+	const { products, status, totalPrice } = useGetProducts();
 
-	if (isLoading) {
+	if (status === 'loading') {
 		return 'loading...';
 	}
 
