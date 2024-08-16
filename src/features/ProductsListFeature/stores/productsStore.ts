@@ -1,13 +1,14 @@
 import { APIProcessableError } from '@/shared/errors/api/ApiProcessableError';
 import { create } from 'zustand';
 import { productsApiService } from '../services/productsApiService';
-import { Product } from '../types';
 import { productMapping } from './mapping/productsMapping';
+import { Product } from '@/entities/Product/Product';
 
 interface ProductsState {
 	products: Product[];
 	isLoading: boolean;
 
+	updateBasket: (product: Product[]) => void;
 	getProductsAction: () => void;
 }
 
@@ -17,12 +18,20 @@ export const productsStore = create<ProductsState>(set => ({
 	selectedProductsIds: {},
 	selectedTotalPrice: 0,
 
+	updateBasket: (basket: Product[]) => {
+		set({ products: [...basket] });
+	},
+
 	getProductsAction: () => {
 		set({ isLoading: true });
 		productsApiService
 			.getProducts()
 			.then(resp => {
-				set({ products: productMapping(resp) });
+				const mappedProducts = productMapping(resp);
+
+				const products = mappedProducts.map(item => new Product(item));
+
+				set({ products });
 			})
 			.catch(error => {
 				throw new APIProcessableError(error, 'Error fetching products');

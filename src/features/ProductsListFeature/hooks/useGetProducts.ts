@@ -1,39 +1,38 @@
 import { useEffect, useMemo } from 'react';
 import { productsStore } from '../stores/productsStore';
-import { basketStore } from '../stores/basketStore';
+import { ProductManager } from '@/entities/Product/ProductManager';
+import { SettedProductsType } from '../types';
 
 export const useGetProducts = () => {
 	const isLoading = productsStore(state => state.isLoading);
 	const productsList = productsStore(state => state.products);
-	const selectedProductsIds = basketStore(state => state.selectedProductsIds);
-	const totalPrice = basketStore(state => state.selectedTotalPrice);
 
 	const getProductsAction = productsStore(state => state.getProductsAction);
-	const addToBasketAction = basketStore(state => state.addToBasketAction);
-	const removeFromBasketAction = basketStore(
-		state => state.removeFromBasketAction
-	);
+	const updateBasket = productsStore(state => state.updateBasket);
+
+	const basketManager = new ProductManager(productsList, updateBasket);
 
 	useEffect(() => {
 		getProductsAction();
 	}, [getProductsAction]);
 
-	const products = useMemo(() => {
+	const products: SettedProductsType[] = useMemo(() => {
 		if (productsList.length) {
 			return productsList.map(item => ({
-				...item,
-				countInBasket: selectedProductsIds[item.id] || 0,
+				...item.product,
+				countInBasket: item.selectedCount,
+				isCanIncrement: item.isCanIncrement,
+				addToBasketAction: () => basketManager.addToBasket(item),
+				removeFromBasketAction: () => basketManager.removeFromBasket(item),
 			}));
 		}
 
 		return [];
-	}, [selectedProductsIds, productsList]);
+	}, [productsList]);
 
 	return {
 		products,
 		isLoading,
-		totalPrice,
-		addToBasketAction,
-		removeFromBasketAction,
+		totalPrice: basketManager.totalPriceInBasket,
 	};
 };

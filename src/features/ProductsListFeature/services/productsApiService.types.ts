@@ -4,4 +4,5 @@ export interface APIProduct {
 	description: string;
 	price: { amount: number; currency: string };
 	categoryId: number;
+	availableCount: number;
 }

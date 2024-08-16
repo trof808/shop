@@ -2,9 +2,9 @@ import { path } from 'ramda';
 import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIProduct } from '../../services/productsApiService.types';
-import { Product } from '../../types';
+import { ProductType } from '../../types';
 
-export const productMapping = (products: APIProduct[]): Product[] => {
+export const productMapping = (products: APIProduct[]): ProductType[] => {
 	if (!Array.isArray(products)) {
 		return [];
 	}
@@ -19,6 +19,7 @@ export const productMapping = (products: APIProduct[]): Product[] => {
 				currency: checkStringField(path(['price', 'currency'], i)),
 			},
 			categoryId: checkNumberField(path(['categoryId'], i)),
+			availableCount: checkNumberField(path(['availableCount'], i)),
 		};
 	});
 };

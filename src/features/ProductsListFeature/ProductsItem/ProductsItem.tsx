@@ -1,13 +1,13 @@
 'use client';
 
 import { memo } from 'react';
-import { Product, SettedProducts } from '../types';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
+import { SettedProductsType } from '../types';
 
 interface Props {
-	product: SettedProducts;
-	addToBasketAction: (product: Product) => void;
-	removeFromBasketAction: (product: Product) => void;
+	product: SettedProductsType;
+	addToBasketAction: () => void;
+	removeFromBasketAction: () => void;
 }
 
 export const ProductsItem = memo(
@@ -29,7 +29,7 @@ export const ProductsItem = memo(
 							<>
 								<ProductButtonForBasket
 									variant='remove'
-									onClick={() => removeFromBasketAction(product)}
+									onClick={removeFromBasketAction}
 								>
 									-
 								</ProductButtonForBasket>
@@ -37,12 +37,11 @@ export const ProductsItem = memo(
 							</>
 						)}
 
-						<ProductButtonForBasket
-							variant='add'
-							onClick={() => addToBasketAction(product)}
-						>
-							+
-						</ProductButtonForBasket>
+						{product.isCanIncrement && (
+							<ProductButtonForBasket variant='add' onClick={addToBasketAction}>
+								+
+							</ProductButtonForBasket>
+						)}
 					</div>
 				</div>
 			</div>

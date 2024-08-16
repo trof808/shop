@@ -11,10 +11,11 @@ class ProductsApiService extends ApiService {
 			title: `Product ${index}`,
 			description: `Description for product ${index}`,
 			price: {
-				amount: parseFloat((Math.random() * 100).toFixed(2)),
+				amount: index * 0.1,
 				currency: 'USD',
 			},
-			categoryId: Math.floor(Math.random() * 10),
+			categoryId: (index % 10) + 1,
+			availableCount: (index % 6) + 1,
 		}));
 
 		// return super.get({ path: 'products' });

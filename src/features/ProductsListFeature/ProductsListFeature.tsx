@@ -6,13 +6,7 @@ import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetProducts } from './hooks/useGetProducts';
 
 export const ProductsListFeature = () => {
-	const {
-		products,
-		isLoading,
-		totalPrice,
-		addToBasketAction,
-		removeFromBasketAction,
-	} = useGetProducts();
+	const { products, isLoading, totalPrice } = useGetProducts();
 
 	if (isLoading) {
 		return 'loading...';
@@ -22,11 +16,7 @@ export const ProductsListFeature = () => {
 		<>
 			<LinkToFiltersButton />
 
-			<ProductsVirtualList
-				products={products}
-				addToBasketAction={addToBasketAction}
-				removeFromBasketAction={removeFromBasketAction}
-			/>
+			<ProductsVirtualList products={products} />
 
 			<BasketButtonFeature totalPrice={totalPrice} />
 		</>
