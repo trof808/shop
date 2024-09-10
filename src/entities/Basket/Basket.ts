@@ -1,48 +1,44 @@
-import { Product, ProductId } from "../Product/Product";
+import { ProductId } from '@/shared/types/product';
+import { IBasketProduct } from './types';
 
 export class Basket {
-    // Можно хранить соответствия с помощью Map
-    // https://learn.javascript.ru/map-set
+	products: IBasketProduct[] = [];
+	productsCount: Record<ProductId, number> = {};
 
-    // Второй вариант
-    products: Product[] = [];
-    productsCount: Record<ProductId, number> = {}
+	constructor() {}
 
-    constructor(productsCount: Record<ProductId, number> = {}) {
-        this.productsCount = productsCount;
-    }
+	addItem(product: IBasketProduct) {
+		if (!(product.id in this.productsCount)) {
+			this.products.push(product);
+			this.productsCount[product.id] = 1;
+		} else {
+			this.productsCount[product.id] = this.productsCount[product.id] + 1;
+		}
+	}
 
-    addItem(product: Product) {
-        if (!(product.id in this.productsCount)) {
-            this.products.push(product);
-            this.productsCount[product.id] = 1;
-        } else {
-            this.productsCount[product.id] = this.productsCount[product.id] + 1;
-        }
-    }
+	removeItem(product: IBasketProduct) {
+		if (this.productsCount[product.id] > 1) {
+			this.productsCount[product.id] = this.productsCount[product.id] - 1;
+		} else {
+			this.products = this.products.filter(p => p.id !== product.id);
+			delete this.productsCount[product.id];
+		}
+	}
 
-    removeItem(product: Product) {}
+	clearProducts() {
+		this.products = [];
+		this.productsCount = {};
+	}
 
-    clear() {}
+	updateProducts(products: IBasketProduct[]) {
+		this.products = products;
+	}
 
-    updateProducts(products: Product[]) {
-        this.products = products;
-    }
-    
-    get getProductsIds() {
-        return Object.keys(this.productsCount);
-    }
+	get getProductsIds() {
+		return Object.keys(this.productsCount);
+	}
 
-    getProductById(id: ProductId) {
-        return this.products.find(p => p.id === id);
-    }
-
-    get totalPrice() {
-        return Object.entries(this.productsCount).reduce((totalPrice, [productId, count]) => {
-            const product = this.getProductById(productId);
-            if (product)
-                return totalPrice + product?.price.amount * count;
-            return 0;
-        }, 0);
-    }
+	getProductById(id: ProductId) {
+		return this.products.find(p => p.id === id);
+	}
 }

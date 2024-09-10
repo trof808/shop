@@ -1,18 +1,16 @@
-type ProductId = number;
-type CategoryId = number;
+import { PriceType } from '@/shared/types/price';
+import { ProductId, CategoryId } from '@/shared/types/product';
 
 export interface ProductType {
 	id: ProductId;
 	title: string;
 	description: string;
-	price: { amount: number; currency: string };
+	price: PriceType;
 	categoryId: CategoryId;
 	availableCount: number;
 }
 
 export interface SettedProductsType extends ProductType {
-	countInBasket: number;
 	addToBasketAction: () => void;
 	removeFromBasketAction: () => void;
-	isCanIncrement: boolean;
 }

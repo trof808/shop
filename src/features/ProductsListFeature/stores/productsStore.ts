@@ -2,25 +2,18 @@ import { APIProcessableError } from '@/shared/errors/api/ApiProcessableError';
 import { create } from 'zustand';
 import { productsApiService } from '../services/productsApiService';
 import { productMapping } from './mapping/productsMapping';
-import { Product } from '@/entities/Product/Product';
+import { ProductType } from '../types';
 
 interface ProductsState {
-	products: Product[];
+	products: ProductType[];
 	status: 'idle' | 'loading' | 'loaded' | 'error';
 
-	updateBasket: (product: Product[]) => void;
 	getProductsAction: () => void;
 }
 
 export const productsStore = create<ProductsState>(set => ({
 	products: [],
 	status: 'idle',
-	selectedProductsIds: {},
-	selectedTotalPrice: 0,
-
-	updateBasket: (basket: Product[]) => {
-		set({ products: [...basket] });
-	},
 
 	getProductsAction: () => {
 		set({ status: 'loading' });
@@ -29,9 +22,7 @@ export const productsStore = create<ProductsState>(set => ({
 			.then(resp => {
 				const mappedProducts = productMapping(resp);
 
-				const products = mappedProducts.map(item => new Product(item));
-
-				set({ products });
+				set({ products: mappedProducts });
 			})
 			.catch(error => {
 				set({ status: 'error' });

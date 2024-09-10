@@ -1,42 +1,47 @@
-import { Product } from "../Product/Product";
-import { Basket } from "./Basket";
+import { Basket } from './Basket';
+import { IBasketProduct } from './types';
 
-class BasketManager {
-    basket: Basket;
+export class BasketManager {
+	updateStore: (basket: Basket) => void;
+	basket: Basket;
 
-    constructor(updateStore) {
-        this.basket = new Basket();
-    }
+	constructor(updateStore: (basket: Basket) => void) {
+		this.updateStore = updateStore;
+		this.basket = new Basket();
+	}
 
-    handleUpdateBasketInStore() {
+	handleUpdateBasketInStore() {
+		this.updateStore(this.basket);
+	}
 
-    }
+	restoreBasketFromLocalStorage(products: IBasketProduct[]) {
+		// Восстановить корзину из localStorage
+		// и актуализировать информацию о продуктах
+		this.updateProductsInBasket(products);
+	}
 
-    restoreBasetFromLocalStorage(products: Product[]) {
-        // Восстановить корзину из localStorage
-        // и актуализировать информацию о продуктах
-        this.updateProductsInBasket(products);
-    }
+	handleSaveBasketToLocalStorage() {}
 
-    handleSaveBasketToLocalStorage() {
+	handleAddItemToBasket(product: IBasketProduct) {
+		this.basket.addItem(product);
+		this.handleUpdateBasketInStore();
+	}
 
-    }
+	handleRemoveItemFromBasket(product: IBasketProduct) {
+		this.basket.removeItem(product);
+		this.handleUpdateBasketInStore();
+	}
 
-    handleAddItemToBasket(product: Product) {
-        this.basket.addItem(product);
-    }
+	handleClearBasket() {
+		this.basket.clearProducts();
+		this.handleUpdateBasketInStore();
+	}
 
-    handleRemoveItemFromBasket(product: Product) {
-
-    }
-
-    handleClearBasket() {
-        this.basket.clear();
-    }
-
-    updateProductsInBasket(products: Product[]) {
-        const productsIdsInBasket = this.basket.getProductsIds;
-        const filteredProductsByIds = products.filter(p => productsIdsInBasket.includes(p.id))
-        this.basket.updateProducts(filteredProductsByIds);
-    }
+	updateProductsInBasket(products: IBasketProduct[]) {
+		const productsIdsInBasket = this.basket.getProductsIds;
+		const filteredProductsByIds = products.filter(p =>
+			productsIdsInBasket.includes(String(p.id))
+		);
+		this.basket.updateProducts(filteredProductsByIds);
+	}
 }

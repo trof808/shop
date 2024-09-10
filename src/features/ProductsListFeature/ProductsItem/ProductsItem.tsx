@@ -1,8 +1,9 @@
 'use client';
 
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
 import { SettedProductsType } from '../types';
+import { basketStore } from '@/features/BasketListFeature/stores/basketStore';
 
 interface Props {
 	product: SettedProductsType;
@@ -12,6 +13,20 @@ interface Props {
 
 export const ProductsItem = memo(
 	({ product, addToBasketAction, removeFromBasketAction }: Props) => {
+		const productsInBasket = basketStore(state => state.productsInBasket);
+
+		const getCountProductInBasket = basketStore(
+			state => state.getCountProductInBasket
+		);
+		const isCanAddItemToBasket = basketStore(
+			state => state.isCanAddItemToBasket
+		);
+
+		React.useEffect(() => {
+			getCountProductInBasket(product);
+			isCanAddItemToBasket(product);
+		}, [productsInBasket]);
+
 		return (
 			<div className='w-64 bg-sky-100 p-6'>
 				<div key={product.id}>
@@ -25,7 +40,7 @@ export const ProductsItem = memo(
 					</p>
 
 					<div className='flex gap-3 items-center'>
-						{!!product.countInBasket && (
+						{!!getCountProductInBasket(product) && (
 							<>
 								<ProductButtonForBasket
 									variant='remove'
@@ -33,11 +48,13 @@ export const ProductsItem = memo(
 								>
 									-
 								</ProductButtonForBasket>
-								<p className='text-[12px]'>{product.countInBasket}</p>
+								<p className='text-[12px]'>
+									{getCountProductInBasket(product)}
+								</p>
 							</>
 						)}
 
-						{product.isCanIncrement && (
+						{isCanAddItemToBasket(product) && (
 							<ProductButtonForBasket variant='add' onClick={addToBasketAction}>
 								+
 							</ProductButtonForBasket>

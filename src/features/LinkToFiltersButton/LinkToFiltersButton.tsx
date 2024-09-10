@@ -1,11 +1,5 @@
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export const LinkToFiltersButton = () => {
-	const router = useRouter();
-
-	const handleBackButtonClick = () => {
-		router.push('/filters' + location.search);
-	};
-
-	return <button onClick={handleBackButtonClick}>Go to the filters</button>;
+	return <Link href={`/filters${location.search}`}>Go to the filters</Link>;
 };
