@@ -2,60 +2,65 @@
 
 import React, { memo } from 'react';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
-import { SettedProductsType } from '../types';
-import { basketStore } from '@/features/BasketListFeature/stores/basketStore';
+import { ProductType } from '../types';
+import { ProductId } from '@/shared/types/product';
 
-interface Props {
-	product: SettedProductsType;
-	addToBasketAction: () => void;
-	removeFromBasketAction: () => void;
+export type ProductItemDataView = Pick<ProductType, 'description' | 'id' | 'price' | 'title'> & {
+	countInBasket: number
+};
+
+export type ProductItemActions = {
+	addToBasket: (id: ProductId) => void;
+	removeFromBasket: (id: ProductId) => void;
+	canAdd: (id: ProductId) => boolean;
+	canRemove: (id: ProductId) => boolean;
 }
 
+export type ProductsItemProps = ProductItemDataView & ProductItemActions;
+
 export const ProductsItem = memo(
-	({ product, addToBasketAction, removeFromBasketAction }: Props) => {
-		const productsInBasket = basketStore(state => state.productsInBasket);
-
-		const getCountProductInBasket = basketStore(
-			state => state.getCountProductInBasket
-		);
-		const isCanAddItemToBasket = basketStore(
-			state => state.isCanAddItemToBasket
-		);
-
-		React.useEffect(() => {
-			getCountProductInBasket(product);
-			isCanAddItemToBasket(product);
-		}, [productsInBasket]);
+	({
+		title,
+		id,
+		price,
+		description,
+		countInBasket,
+		addToBasket,
+		removeFromBasket,
+		canAdd,
+		canRemove,
+	}: ProductsItemProps) => {
 
 		return (
 			<div className='w-64 bg-sky-100 p-6'>
-				<div key={product.id}>
-					<h2>{product.title}</h2>
-					<p>{product.description}</p>
+				<div key={id}>
+					<h2>{title}</h2>
+					<p>{description}</p>
 				</div>
 
 				<div className='flex justify-between items-center'>
 					<p>
-						<b>${product.price.amount}</b>
+						<b>${price.amount}</b>
 					</p>
 
 					<div className='flex gap-3 items-center'>
-						{!!getCountProductInBasket(product) && (
+						{canRemove(id) && (
 							<>
 								<ProductButtonForBasket
 									variant='remove'
-									onClick={removeFromBasketAction}
+									onClick={() => removeFromBasket(id)}
 								>
 									-
 								</ProductButtonForBasket>
-								<p className='text-[12px]'>
-									{getCountProductInBasket(product)}
-								</p>
 							</>
 						)}
 
-						{isCanAddItemToBasket(product) && (
-							<ProductButtonForBasket variant='add' onClick={addToBasketAction}>
+						{countInBasket && <p className='text-[12px]'>
+							{countInBasket}
+						</p>}
+
+						{canAdd(id) && (
+							<ProductButtonForBasket variant='add' onClick={() => addToBasket(id)}>
 								+
 							</ProductButtonForBasket>
 						)}

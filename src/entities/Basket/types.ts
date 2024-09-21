@@ -9,3 +9,8 @@ export interface IBasketProduct {
 	categoryId: CategoryId;
 	availableCount: number;
 }
+
+export interface IBasket {
+	products: IBasketProduct[];
+	productsCount: Record<string, number>;
+}
