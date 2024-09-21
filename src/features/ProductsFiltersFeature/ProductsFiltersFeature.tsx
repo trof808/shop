@@ -1,15 +1,12 @@
 'use client';
 
-import { LinkBackButton } from '../LinkBackButton/LinkBackButton';
 import { useGetProductsFilters } from './hooks/useGetProductsFilters';
 
 export const ProductsFiltersFeature = () => {
 	const { filters, urlFilterManager } = useGetProductsFilters();
 
 	return (
-		<div>
-			<LinkBackButton href='/' />
-
+		<>
 			{filters.map(filter => (
 				<div key={filter.name}>
 					<h3>{filter.name}</h3>
@@ -29,6 +26,6 @@ export const ProductsFiltersFeature = () => {
 					))}
 				</div>
 			))}
-		</div>
+		</>
 	);
 };

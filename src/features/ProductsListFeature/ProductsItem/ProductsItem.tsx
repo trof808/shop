@@ -5,8 +5,11 @@ import { ProductButtonForBasket } from './components/ProductButtonForBasket';
 import { ProductType } from '../types';
 import { ProductId } from '@/shared/types/product';
 
-export type ProductItemDataView = Pick<ProductType, 'description' | 'id' | 'price' | 'title'> & {
-	countInBasket: number
+export type ProductItemDataView = Pick<
+	ProductType,
+	'description' | 'id' | 'price' | 'title'
+> & {
+	countInBasket: number;
 };
 
 export type ProductItemActions = {
@@ -14,7 +17,7 @@ export type ProductItemActions = {
 	removeFromBasket: (id: ProductId) => void;
 	canAdd: (id: ProductId) => boolean;
 	canRemove: (id: ProductId) => boolean;
-}
+};
 
 export type ProductsItemProps = ProductItemDataView & ProductItemActions;
 
@@ -30,7 +33,6 @@ export const ProductsItem = memo(
 		canAdd,
 		canRemove,
 	}: ProductsItemProps) => {
-
 		return (
 			<div className='w-64 bg-sky-100 p-6'>
 				<div key={id}>
@@ -40,7 +42,7 @@ export const ProductsItem = memo(
 
 				<div className='flex justify-between items-center'>
 					<p>
-						<b>${price.amount}</b>
+						<b>${price.amount.toFixed(2)}</b>
 					</p>
 
 					<div className='flex gap-3 items-center'>
@@ -55,15 +57,15 @@ export const ProductsItem = memo(
 							</>
 						)}
 
-						{countInBasket && <p className='text-[12px]'>
-							{countInBasket}
-						</p>}
+						{countInBasket && <p className='text-[12px]'>{countInBasket}</p>}
 
-						{canAdd(id) && (
-							<ProductButtonForBasket variant='add' onClick={() => addToBasket(id)}>
-								+
-							</ProductButtonForBasket>
-						)}
+						<ProductButtonForBasket
+							variant='add'
+							onClick={() => addToBasket(id)}
+							disabled={!canAdd(id)}
+						>
+							+
+						</ProductButtonForBasket>
 					</div>
 				</div>
 			</div>
