@@ -1,16 +1,15 @@
 'use client';
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
-import { ProductsItem } from './ProductsItem/ProductsItem';
-import { SettedProductsType } from './types';
+import { ProductItemActions, ProductItemDataView, ProductsItem } from './ProductsItem/ProductsItem';
 
-interface Props {
-	products: SettedProductsType[];
+type Props = ProductItemActions & {
+	products: ProductItemDataView[];
 }
 
-export const ProductsVirtualList = ({ products }: Props) => {
+export const ProductsVirtualList = ({ products, ...rest }: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
-		useVirtualList<SettedProductsType>(products, 120);
+		useVirtualList<ProductItemDataView>(products, 120);
 
 	return (
 		<div ref={listRef} className='h-[700px] overflow-y-auto'>
@@ -22,9 +21,12 @@ export const ProductsVirtualList = ({ products }: Props) => {
 					{visibleItems.map(product => (
 						<ProductsItem
 							key={product.id}
-							product={product}
-							addToBasketAction={product.addToBasketAction}
-							removeFromBasketAction={product.removeFromBasketAction}
+							id={product.id}
+							title={product.title}
+							description={product.description}
+							price={product.price}
+							countInBasket={product.countInBasket}
+							{...rest}
 						/>
 					))}
 				</div>

@@ -1,43 +1,59 @@
 import { Basket } from './Basket';
-import { IBasketProduct } from './types';
+import { IBasket, IBasketProduct } from '../types';
+import { ApiService } from '@/shared/api/apiService';
+
+const BASKET_KEY = 'basket';
 
 export class BasketManager {
-	updateStore: (basket: Basket) => void;
+	updateStore: (basket: IBasket) => void;
 	basket: Basket;
 
-	constructor(updateStore: (basket: Basket) => void) {
+	constructor(
+		updateStore: (basket: IBasket) => void,
+		defaultBasketState: IBasket,
+		// apiService: ApiService,
+	) {
 		this.updateStore = updateStore;
-		this.basket = new Basket();
+		this.basket = new Basket(defaultBasketState);
 	}
 
-	handleUpdateBasketInStore() {
-		this.updateStore(this.basket);
+	syncData() {
+		return Promise.all([
+			this.handleUpdateStore,
+			this.handleUpdateBrowserStorage,
+		])
+	}
+
+	handleUpdateStore() {
+		this.updateStore(this.basket.obj);
+	}
+
+	handleUpdateBrowserStorage() {
+		// this.updateBrowserStorage(this.basket.obj);
 	}
 
 	restoreBasketFromLocalStorage(products: IBasketProduct[]) {
 		// Восстановить корзину из localStorage
 		// и актуализировать информацию о продуктах
-		this.updateProductsInBasket(products);
+		this.updateProductsDataInBasket(products);
 	}
-
-	handleSaveBasketToLocalStorage() {}
 
 	handleAddItemToBasket(product: IBasketProduct) {
 		this.basket.addItem(product);
-		this.handleUpdateBasketInStore();
+		this.handleUpdateStore();
 	}
 
 	handleRemoveItemFromBasket(product: IBasketProduct) {
 		this.basket.removeItem(product);
-		this.handleUpdateBasketInStore();
+		this.handleUpdateStore();
 	}
 
 	handleClearBasket() {
 		this.basket.clearProducts();
-		this.handleUpdateBasketInStore();
+		this.handleUpdateStore();
 	}
 
-	updateProductsInBasket(products: IBasketProduct[]) {
+	updateProductsDataInBasket(products: IBasketProduct[]) {
 		const productsIdsInBasket = this.basket.getProductsIds;
 		const filteredProductsByIds = products.filter(p =>
 			productsIdsInBasket.includes(String(p.id))
