@@ -17,25 +17,8 @@ export class BasketManager {
 		this.basket = new Basket(defaultBasketState);
 	}
 
-	syncData() {
-		return Promise.all([
-			this.handleUpdateStore,
-			this.handleUpdateBrowserStorage,
-		])
-	}
-
 	handleUpdateStore() {
 		this.updateStore(this.basket.obj);
-	}
-
-	handleUpdateBrowserStorage() {
-		// this.updateBrowserStorage(this.basket.obj);
-	}
-
-	restoreBasketFromLocalStorage(products: IBasketProduct[]) {
-		// Восстановить корзину из localStorage
-		// и актуализировать информацию о продуктах
-		this.updateProductsDataInBasket(products);
 	}
 
 	handleAddItemToBasket(product: IBasketProduct) {
