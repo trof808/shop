@@ -1,4 +1,5 @@
 import '../globals.css';
+import { ButtonBackProvider } from './ButtonBackProvider';
 
 export const metadata = {
 	title: 'Shop',
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body>{children}</body>
+			<body>
+				<ButtonBackProvider>{children}</ButtonBackProvider>
+			</body>
 		</html>
 	);
 }

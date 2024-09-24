@@ -39,12 +39,12 @@ export class Basket {
 
 		const availableCount = currentProduct.availableCount;
 		return productCountInBasket < availableCount;
-	}
+	};
 
 	canRemove = (id: ProductId): boolean => {
 		const productCountInBasket = this.getProductCountById(id);
 		return productCountInBasket > 0;
-	}
+	};
 
 	clearProducts() {
 		this.products = [];
@@ -57,14 +57,18 @@ export class Basket {
 
 	getProductCountById = (id: ProductId) => {
 		return this.productsCount[id] || 0;
-	}
+	};
 
 	get getProductsIds() {
 		return Object.keys(this.productsCount);
 	}
 
 	get totalPrice() {
-		return this.products.reduce((result, product) => result + product.price.amount, 0);
+		return this.products.reduce(
+			(result, product) =>
+				result + product.price.amount * this.productsCount[product.id],
+			0
+		);
 	}
 
 	getProductById(id: ProductId) {
@@ -74,7 +78,7 @@ export class Basket {
 	get obj(): IBasket {
 		return {
 			products: this.products,
-			productsCount: this.productsCount
+			productsCount: this.productsCount,
 		};
 	}
 }
