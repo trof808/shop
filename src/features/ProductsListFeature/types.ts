@@ -9,8 +9,3 @@ export interface ProductType {
 	categoryId: CategoryId;
 	availableCount: number;
 }
-
-export interface SettedProductsType extends ProductType {
-	addToBasketAction: () => void;
-	removeFromBasketAction: () => void;
-}

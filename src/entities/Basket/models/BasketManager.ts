@@ -1,6 +1,5 @@
 import { Basket } from './Basket';
 import { IBasket, IBasketProduct } from '../types';
-import { ApiService } from '@/shared/api/apiService';
 
 const BASKET_KEY = 'basket';
 
@@ -11,7 +10,6 @@ export class BasketManager {
 	constructor(
 		updateStore: (basket: IBasket) => void,
 		defaultBasketState: IBasket,
-		// apiService: ApiService,
 	) {
 		this.updateStore = updateStore;
 		this.basket = new Basket(defaultBasketState);
@@ -34,13 +32,5 @@ export class BasketManager {
 	handleClearBasket() {
 		this.basket.clearProducts();
 		this.handleUpdateStore();
-	}
-
-	updateProductsDataInBasket(products: IBasketProduct[]) {
-		const productsIdsInBasket = this.basket.getProductsIds;
-		const filteredProductsByIds = products.filter(p =>
-			productsIdsInBasket.includes(String(p.id))
-		);
-		this.basket.updateProducts(filteredProductsByIds);
 	}
 }
