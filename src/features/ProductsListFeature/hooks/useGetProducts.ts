@@ -14,6 +14,7 @@ export const useGetProducts = () => {
 
 	useEffect(() => {
 		getProductsAction();
+		basketManager.restoreBasketFromLocalStorage();
 	}, []);
 
 	const products: ProductItemDataView[] = useMemo(() => {
@@ -30,17 +31,21 @@ export const useGetProducts = () => {
 		return [];
 	}, [productsList, basketManager]);
 
-	const handleAddToBasket = useCallback((id: ProductId) => {
-		const product = findProductById(id);
-		if (!!product)
-			basketManager.handleAddItemToBasket(product);
-	}, [basketManager, findProductById]);
+	const handleAddToBasket = useCallback(
+		(id: ProductId) => {
+			const product = findProductById(id);
+			if (!!product) basketManager.handleAddItemToBasket(product);
+		},
+		[basketManager, findProductById]
+	);
 
-	const handleRemoveFromBasket = useCallback((id: ProductId) => {
-		const product = findProductById(id);
-		if (!!product)
-			basketManager.handleRemoveItemFromBasket(product);
-	}, [basketManager, findProductById]);
+	const handleRemoveFromBasket = useCallback(
+		(id: ProductId) => {
+			const product = findProductById(id);
+			if (!!product) basketManager.handleRemoveItemFromBasket(product);
+		},
+		[basketManager, findProductById]
+	);
 
 	return {
 		products,

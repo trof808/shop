@@ -55,6 +55,10 @@ export class Basket {
 		this.products = products;
 	}
 
+	updateProductsCount(productsCount: Record<ProductId, number>) {
+		this.productsCount = productsCount;
+	}
+
 	getProductCountById = (id: ProductId) => {
 		return this.productsCount[id] || 0;
 	};
