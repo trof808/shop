@@ -42,7 +42,7 @@ export const ProductsItem = memo(
 
 				<div className='flex justify-between items-center'>
 					<p>
-						<b>${price.amount.toFixed(2)}</b>
+						<b>${price.amount}</b>
 					</p>
 
 					<div className='flex gap-3 items-center'>

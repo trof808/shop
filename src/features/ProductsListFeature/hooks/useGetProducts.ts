@@ -14,7 +14,6 @@ export const useGetProducts = () => {
 
 	useEffect(() => {
 		getProductsAction();
-		basketManager.restoreBasketFromLocalStorage();
 	}, []);
 
 	const products: ProductItemDataView[] = useMemo(() => {

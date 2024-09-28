@@ -20,7 +20,7 @@ export const BasketButtonFeature = () => {
 				<div className='flex items-center justify-between'>
 					<div className='flex items-center gap-[5px]'>
 						<BasketIcon />
-						<span>{totalPrice.toFixed(2)} $</span>
+						<span>{totalPrice} $</span>
 					</div>
 
 					<ArrowRight />

@@ -7,8 +7,8 @@ import { BasketCard } from './BasketCard';
 export const BasketListFeature = () => {
 	const { basketManager } = useGetBasketManager();
 
-	if (!basketManager.basket.getProductsIds) {
-		return 'Basket is empty';
+	if (!basketManager.basket.getProductsIds.length) {
+		return <div className='text-center text-lg font-bold'>Basket is empty</div>;
 	}
 
 	return (
@@ -23,6 +23,13 @@ export const BasketListFeature = () => {
 					/>
 				))}
 			</div>
+
+			<button
+				className='flex bg-red-500 hover:bg-red-700 text-white font-bold mt-4 py-2 px-4 rounded mx-auto'
+				onClick={() => basketManager.handleClearBasket()}
+			>
+				Clear basket
+			</button>
 		</section>
 	);
 };

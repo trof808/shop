@@ -7,15 +7,17 @@ class ProductsApiService extends ApiService {
 	// TODO: mock data
 	public async getProducts(): Promise<APIProduct[]> {
 		return Array.from({ length: 1000 }, (_, index) => ({
-			id: index,
-			title: `Product ${index}`,
-			description: `Description for product ${index}`,
+			id: index + 1,
+			title: `Product ${index + 1}`,
+			description: `Description for product ${index + 1}`,
 			price: {
-				amount: index * 0.1,
+				amount: parseFloat(
+					(index + 1 + (Math.random() * 0.09 + 0.1)).toFixed(2)
+				),
 				currency: 'USD',
 			},
-			categoryId: (index % 10) + 1,
-			availableCount: (index % 6) + 1,
+			categoryId: ((index + 1) % 10) + 1,
+			availableCount: ((index + 1) % 6) + 1,
 		}));
 
 		// return super.get({ path: 'products' });
