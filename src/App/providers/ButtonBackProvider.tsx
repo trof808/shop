@@ -1,6 +1,6 @@
 'use client';
 
-import { LinkBackButton } from '@/shared/components/LinkBackButton/LinkBackButton';
+import { LinkBackButton } from '@/shared/components/ui/LinkBackButton/LinkBackButton';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { PagesRoutes } from '@/shared/constants';

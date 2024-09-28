@@ -1,5 +1,5 @@
 import React from 'react';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '@/shared/lib/utils';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	variant: 'add' | 'remove';
@@ -24,7 +24,7 @@ export const ProductButtonForBasket: React.FC<ButtonProps> = ({
 
 	return (
 		<button
-			className={twMerge(baseClasses, variantClasses, disabledClasses)}
+			className={cn(baseClasses, variantClasses, disabledClasses)}
 			disabled={disabled}
 			{...props}
 		>
