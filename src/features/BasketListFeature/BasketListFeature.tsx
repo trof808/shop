@@ -6,6 +6,8 @@ import { BasketCard } from './BasketCard';
 
 export const BasketListFeature = () => {
 	const { basketManager } = useGetBasketManager();
+	// Можно было бы сделать кастомный хук
+	// const { products, isEmpty, getProductCountById } = useGetBasketList();
 
 	if (!basketManager.basket.getProductsIds) {
 		return 'Basket is empty';

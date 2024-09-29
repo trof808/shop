@@ -2,15 +2,8 @@
 
 import React, { memo } from 'react';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
-import { ProductType } from '../types';
+import { ProductItemDataView, ProductType } from '../types';
 import { ProductId } from '@/shared/types/product';
-
-export type ProductItemDataView = Pick<
-	ProductType,
-	'description' | 'id' | 'price' | 'title'
-> & {
-	countInBasket: number;
-};
 
 export type ProductItemActions = {
 	addToBasket: (id: ProductId) => void;
@@ -41,6 +34,7 @@ export const ProductsItem = memo(
 				</div>
 
 				<div className='flex justify-between items-center'>
+					{/* Компонент Money */}
 					<p>
 						<b>${price.amount.toFixed(2)}</b>
 					</p>

@@ -1,7 +1,8 @@
 'use client';
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
-import { ProductItemActions, ProductItemDataView, ProductsItem } from './ProductsItem/ProductsItem';
+import { ProductItemActions, ProductsItem } from './ProductsItem/ProductsItem';
+import { ProductItemDataView } from './types';
 
 type Props = ProductItemActions & {
 	products: ProductItemDataView[];
@@ -21,11 +22,7 @@ export const ProductsVirtualList = ({ products, ...rest }: Props) => {
 					{visibleItems.map(product => (
 						<ProductsItem
 							key={product.id}
-							id={product.id}
-							title={product.title}
-							description={product.description}
-							price={product.price}
-							countInBasket={product.countInBasket}
+							{...product}
 							{...rest}
 						/>
 					))}

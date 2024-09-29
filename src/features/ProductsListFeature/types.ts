@@ -9,3 +9,10 @@ export interface ProductType {
 	categoryId: CategoryId;
 	availableCount: number;
 }
+
+export type ProductItemDataView = Pick<
+	ProductType,
+	'description' | 'id' | 'price' | 'title'
+> & {
+	countInBasket: number;
+};

@@ -14,6 +14,7 @@ export const BasketButtonFeature = () => {
 		return null;
 	}
 
+	// Чистый компонент BusketButton
 	return (
 		<div className='fixed bottom-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-fit bg-[#d9d9d9] rounded-[16px]'>
 			<Link className='block p-[13px] min-w-[300px]' href={PagesRoutes.BASKET}>
@@ -21,6 +22,7 @@ export const BasketButtonFeature = () => {
 					<div className='flex items-center gap-[5px]'>
 						<BasketIcon />
 						<span>{totalPrice.toFixed(2)} $</span>
+						{/* <Money amount={totalPrice} currency='USD'/> */}
 					</div>
 
 					<ArrowRight />

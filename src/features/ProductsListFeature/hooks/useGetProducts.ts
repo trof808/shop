@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { productsStore } from '../stores/productsStore';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
-import { ProductItemDataView } from '../ProductsItem/ProductsItem';
 import { ProductId } from '@/shared/types/product';
+import { ProductItemDataView } from '../types';
 
 export const useGetProducts = () => {
 	const status = productsStore(state => state.status);
