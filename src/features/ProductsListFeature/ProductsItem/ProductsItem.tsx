@@ -34,7 +34,7 @@ export const ProductsItem = memo(
 		canRemove,
 	}: ProductsItemProps) => {
 		return (
-			<div className='w-64 bg-sky-100 p-6'>
+			<div data-testid='productCard' className='w-64 bg-sky-100 p-6'>
 				<div key={id}>
 					<h2>{title}</h2>
 					<p>{description}</p>
@@ -49,6 +49,7 @@ export const ProductsItem = memo(
 						{canRemove(id) && (
 							<>
 								<ProductButtonForBasket
+									data-testid='removeFromBasketBtn'
 									variant='remove'
 									onClick={() => removeFromBasket(id)}
 								>
@@ -57,9 +58,14 @@ export const ProductsItem = memo(
 							</>
 						)}
 
-						{countInBasket && <p className='text-[12px]'>{countInBasket}</p>}
+						{Boolean(countInBasket) && (
+							<p data-testid='countInBasket' className='text-[12px]'>
+								{countInBasket}
+							</p>
+						)}
 
 						<ProductButtonForBasket
+							data-testid='addToBasketBtn'
 							variant='add'
 							onClick={() => addToBasket(id)}
 							disabled={!canAdd(id)}
