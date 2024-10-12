@@ -12,7 +12,7 @@ export const useVirtualList = <ItemsType>(
 	const updateVisibleItems = () => {
 		const startIndex = Math.floor(listScrollTop / itemHeight);
 		const endIndex = Math.min(
-			startIndex + Math.ceil(listHeight / itemHeight),
+			startIndex + Math.ceil(listHeight / itemHeight) + 2,
 			items.length
 		);
 

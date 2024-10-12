@@ -1,15 +1,26 @@
 'use client';
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
-import { ProductItemActions, ProductItemDataView, ProductsItem } from './ProductsItem/ProductsItem';
+import {
+	ProductItemActions,
+	ProductItemDataView,
+	ProductsItem,
+} from './ProductsItem/ProductsItem';
+import { useInfinityScroll } from '@/shared/hooks/useInfinityScroll';
+import { useFetchProductsNextPage } from './hooks/useFetchProductsNextPage';
 
 type Props = ProductItemActions & {
 	products: ProductItemDataView[];
-}
+};
 
 export const ProductsVirtualList = ({ products, ...rest }: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
-		useVirtualList<ProductItemDataView>(products, 120);
+		useVirtualList<ProductItemDataView>(products, 200);
+	const { fetchProductsNextPage } = useFetchProductsNextPage();
+
+	useInfinityScroll(listRef, () => {
+		fetchProductsNextPage();
+	});
 
 	return (
 		<div ref={listRef} className='h-[700px] overflow-y-auto'>

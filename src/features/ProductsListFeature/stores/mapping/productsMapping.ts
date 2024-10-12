@@ -4,7 +4,9 @@ import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIProduct } from '../../services/productsApiService.types';
 import { ProductType } from '../../types';
 
-export const productMapping = (products: APIProduct[]): ProductType[] => {
+export const productMapping = (
+	products: APIProduct['products']
+): ProductType[] => {
 	if (!Array.isArray(products)) {
 		return [];
 	}

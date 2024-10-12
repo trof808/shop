@@ -2,12 +2,6 @@ import { host } from '@/shared/constants';
 import axios from 'axios';
 
 export abstract class ApiService {
-	private baseUrl: string;
-
-	constructor(baseUrl: string) {
-		this.baseUrl = `${host}${baseUrl}`;
-	}
-
 	public async get<ResponseType>({
 		path = '',
 		params = {},
@@ -17,9 +11,9 @@ export abstract class ApiService {
 	} = {}): Promise<ResponseType> {
 		return await axios({
 			method: 'GET',
-			url: `${this.baseUrl}${path}`,
+			url: `${host}${path}`,
 			params,
-		});
+		}).then(response => response.data);
 	}
 
 	public async create<ResponseType, PayloadType>(
@@ -29,7 +23,7 @@ export abstract class ApiService {
 		return await axios({
 			method: 'POST',
 			data: body,
-			url: `${this.baseUrl}${path}`,
+			url: `${host}${path}`,
 		});
 	}
 
@@ -40,7 +34,7 @@ export abstract class ApiService {
 		const bodyParams = JSON.stringify(payload);
 		return await axios({
 			method: 'PUT',
-			url: `${this.baseUrl}/${path}`,
+			url: `${host}${path}`,
 			data: bodyParams,
 		});
 	}
@@ -48,7 +42,7 @@ export abstract class ApiService {
 	public async delete<ResponseType>(path: string = ''): Promise<ResponseType> {
 		return (await axios({
 			method: 'DELETE',
-			url: `${this.baseUrl}/${path}`,
+			url: `${host}${path}`,
 		})) as unknown as ResponseType;
 	}
 }
