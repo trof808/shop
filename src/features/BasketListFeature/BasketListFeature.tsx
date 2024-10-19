@@ -1,27 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
 import { BasketCard } from './BasketCard';
-import { useToast } from '@/shared/hooks/useToast';
+import { useGetMainPageProductsList } from '../ProductsListFeature/hooks/useGetMainPageProductsList';
 
 export const BasketListFeature = () => {
 	const { basketManager } = useGetBasketManager();
-	const { toast } = useToast();
-
-	useEffect(() => {
-		if (basketManager.isPricesChanged) {
-			toast({
-				title: 'Warning!',
-				description: 'Prices could have changed',
-				variant: 'warning',
-			});
-		}
-
-		return () => {
-			basketManager.isPricesChanged = false;
-		};
-	}, [toast, basketManager]);
+	useGetMainPageProductsList();
 
 	if (!basketManager.basket.getProductsIds.length) {
 		return <div className='text-center text-lg font-bold'>Basket is empty</div>;

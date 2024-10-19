@@ -1,25 +1,32 @@
 'use client';
 
 import { useVirtualList } from '@/shared/hooks/useVirtualList';
+import { ProductsItem } from './ProductsItem/ProductsItem';
+import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll';
 import {
 	ProductItemActions,
 	ProductItemDataView,
-	ProductsItem,
-} from './ProductsItem/ProductsItem';
-import { useInfinityScroll } from '@/shared/hooks/useInfinityScroll';
-import { useFetchProductsNextPage } from './hooks/useFetchProductsNextPage';
+	ProductLoadActions,
+} from './types';
 
-type Props = ProductItemActions & {
-	products: ProductItemDataView[];
-};
+type Props = ProductItemActions &
+	ProductLoadActions & {
+		products: ProductItemDataView[];
+	};
 
-export const ProductsVirtualList = ({ products, ...rest }: Props) => {
+export const ProductsVirtualList = ({
+	products,
+	fetchNextPage,
+	hasNextPage,
+	...rest
+}: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
 		useVirtualList<ProductItemDataView>(products, 200);
-	const { fetchProductsNextPage } = useFetchProductsNextPage();
 
-	useInfinityScroll(listRef, () => {
-		fetchProductsNextPage();
+	useInfiniteScroll(listRef, () => {
+		if (hasNextPage) {
+			fetchNextPage();
+		}
 	});
 
 	return (

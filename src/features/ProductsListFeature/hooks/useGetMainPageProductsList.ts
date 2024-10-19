@@ -1,20 +1,12 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { productsStore } from '../stores/productsStore';
+import { useCallback, useMemo } from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
-import { ProductItemDataView } from '../ProductsItem/ProductsItem';
 import { ProductId } from '@/shared/types/product';
+import { useGetProducts } from '@/entities/Products/hooks/useGetProducts';
+import { ProductItemDataView } from '../types';
 
-export const useGetProducts = () => {
-	const status = productsStore(state => state.status);
-	const productsList = productsStore(state => state.products);
-	const findProductById = productsStore(state => state.findById);
-
-	const getProductsAction = productsStore(state => state.getProductsAction);
+export const useGetMainPageProductsList = () => {
 	const { basketManager } = useGetBasketManager();
-
-	useEffect(() => {
-		getProductsAction();
-	}, []);
+	const { productsList, status, fetchNextPage, hasNextPage } = useGetProducts();
 
 	const products: ProductItemDataView[] = useMemo(() => {
 		if (productsList.length) {
@@ -29,6 +21,13 @@ export const useGetProducts = () => {
 
 		return [];
 	}, [productsList, basketManager]);
+
+	const findProductById = useCallback(
+		(id: ProductId) => {
+			return productsList.find(p => p.id === id);
+		},
+		[productsList]
+	);
 
 	const handleAddToBasket = useCallback(
 		(id: ProductId) => {
@@ -53,5 +52,7 @@ export const useGetProducts = () => {
 		canRemove: basketManager.basket.canRemove,
 		handleRemoveFromBasket,
 		handleAddToBasket,
+		fetchNextPage,
+		hasNextPage,
 	};
 };

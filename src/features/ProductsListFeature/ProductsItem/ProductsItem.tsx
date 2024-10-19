@@ -2,22 +2,7 @@
 
 import React, { memo } from 'react';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
-import { ProductType } from '../types';
-import { ProductId } from '@/shared/types/product';
-
-export type ProductItemDataView = Pick<
-	ProductType,
-	'description' | 'id' | 'price' | 'title'
-> & {
-	countInBasket: number;
-};
-
-export type ProductItemActions = {
-	addToBasket: (id: ProductId) => void;
-	removeFromBasket: (id: ProductId) => void;
-	canAdd: (id: ProductId) => boolean;
-	canRemove: (id: ProductId) => boolean;
-};
+import { ProductItemActions, ProductItemDataView } from '../types';
 
 export type ProductsItemProps = ProductItemDataView & ProductItemActions;
 

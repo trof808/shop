@@ -1,22 +1,26 @@
 import { Basket } from './Basket';
 import { IBasket, IBasketProduct } from '../types';
-import { BrowserStorage } from '@/entities/BrowserStorage/models/BrowserStorage';
 import { ProductId } from '@/shared/types/product';
-
-const BASKET_KEY = 'basket';
 
 export class BasketManager {
 	updateStore: (basket: IBasket) => void;
+	callToast: () => void;
 	basket: Basket;
-	isPricesChanged: boolean;
+	updateBrowserStorage: (basket: Basket) => void;
+	getBrowserStorage: () => string | null;
 
 	constructor(
 		updateStore: (basket: IBasket) => void,
-		defaultBasketState: IBasket
+		callToast: () => void,
+		defaultBasketState: IBasket,
+		updateBrowserStorage: (basket: Basket) => void,
+		getBrowserStorage: () => string | null
 	) {
 		this.updateStore = updateStore;
+		this.callToast = callToast;
 		this.basket = new Basket(defaultBasketState);
-		this.isPricesChanged = false;
+		this.updateBrowserStorage = updateBrowserStorage;
+		this.getBrowserStorage = getBrowserStorage;
 	}
 
 	syncData() {
@@ -38,7 +42,7 @@ export class BasketManager {
 	}
 
 	handleUpdateBrowserStorage() {
-		BrowserStorage.setItemLocalStorage(BASKET_KEY, JSON.stringify(this.basket));
+		this.updateBrowserStorage(this.basket);
 	}
 
 	updateProductsPrices(products: IBasketProduct[]) {
@@ -51,7 +55,7 @@ export class BasketManager {
 					productInBasket.price.amount !== product.price.amount
 				) {
 					product.price.amount = productInBasket.price.amount;
-					this.isPricesChanged = true;
+					this.callToast();
 				}
 
 				return product;
@@ -66,8 +70,7 @@ export class BasketManager {
 	}
 
 	restoreBasketFromLocalStorage() {
-		const basketFromLocalStorage =
-			BrowserStorage.getItemLocalStorage(BASKET_KEY);
+		const basketFromLocalStorage = this.getBrowserStorage();
 
 		if (basketFromLocalStorage) {
 			const basketFromLocalStorageObj = JSON.parse(basketFromLocalStorage);

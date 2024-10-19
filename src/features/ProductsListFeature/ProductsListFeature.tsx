@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductsVirtualList } from './ProductsVirtualList';
-import { useGetProducts } from './hooks/useGetProducts';
+import { useGetMainPageProductsList } from './hooks/useGetMainPageProductsList';
 
 export const ProductsListFeature = () => {
 	const {
@@ -11,9 +11,11 @@ export const ProductsListFeature = () => {
 		canRemove,
 		handleAddToBasket,
 		handleRemoveFromBasket,
-	} = useGetProducts();
+		fetchNextPage,
+		hasNextPage,
+	} = useGetMainPageProductsList();
 
-	if (status === 'loading') {
+	if (status === 'pending') {
 		return 'loading...';
 	}
 
@@ -24,6 +26,8 @@ export const ProductsListFeature = () => {
 			canRemove={canRemove}
 			addToBasket={handleAddToBasket}
 			removeFromBasket={handleRemoveFromBasket}
+			fetchNextPage={fetchNextPage}
+			hasNextPage={hasNextPage}
 		/>
 	);
 };

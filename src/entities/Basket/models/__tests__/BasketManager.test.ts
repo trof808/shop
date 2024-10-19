@@ -1,5 +1,9 @@
-import { IBasket } from '../types';
-import { BasketManager } from './BasketManager';
+import { toast } from '@/shared/hooks/useToast';
+import { IBasket } from '../../types';
+import { BasketManager } from '../BasketManager';
+import { LocalStorage } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
+import { Basket } from '../Basket';
+import { BASKET_KEY } from '../constants';
 
 const product = {
 	id: 1,
@@ -30,6 +34,7 @@ describe('BasketManager', () => {
 	let updateStoreMock: (basket: IBasket) => void;
 	let defaultBasketState: IBasket;
 	let basketManager: BasketManager;
+	const localStorageInstance = new LocalStorage();
 
 	describe('should work correctly', () => {
 		beforeEach(() => {
@@ -38,7 +43,22 @@ describe('BasketManager', () => {
 				products: [],
 				productsCount: {},
 			};
-			basketManager = new BasketManager(updateStoreMock, defaultBasketState);
+			const callToast = () =>
+				toast({
+					title: 'Warning!',
+					description: 'Prices could have changed',
+					variant: 'warning',
+				});
+			const updateBrowserStorage = (basket: Basket) =>
+				localStorageInstance.set(BASKET_KEY, JSON.stringify(basket));
+			const getBrowserStorage = () => localStorageInstance.get(BASKET_KEY);
+			basketManager = new BasketManager(
+				updateStoreMock,
+				callToast,
+				defaultBasketState,
+				updateBrowserStorage,
+				getBrowserStorage
+			);
 		});
 
 		test('should add item to basket and sync data', () => {
