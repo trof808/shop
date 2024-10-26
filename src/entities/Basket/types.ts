@@ -1,5 +1,5 @@
 import { PriceType } from '@/shared/types/price';
-import { CategoryId, ProductId } from '@/shared/types/product';
+import { CategoryId, ProductId } from '../Products/types';
 
 export interface IBasketProduct {
 	id: ProductId;

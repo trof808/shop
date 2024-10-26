@@ -1,23 +1,23 @@
 import { Basket } from './Basket';
 import { IBasket, IBasketProduct } from '../types';
-import { ProductId } from '@/shared/types/product';
+import { ProductId } from '@/entities/Products/types';
 
 export class BasketManager {
 	updateStore: (basket: IBasket) => void;
-	callToast: () => void;
+	notify: (message: string) => void;
 	basket: Basket;
 	updateBrowserStorage: (basket: Basket) => void;
 	getBrowserStorage: () => string | null;
 
 	constructor(
 		updateStore: (basket: IBasket) => void,
-		callToast: () => void,
+		notify: (message: string) => void,
 		defaultBasketState: IBasket,
 		updateBrowserStorage: (basket: Basket) => void,
 		getBrowserStorage: () => string | null
 	) {
 		this.updateStore = updateStore;
-		this.callToast = callToast;
+		this.notify = notify;
 		this.basket = new Basket(defaultBasketState);
 		this.updateBrowserStorage = updateBrowserStorage;
 		this.getBrowserStorage = getBrowserStorage;
@@ -55,7 +55,7 @@ export class BasketManager {
 					productInBasket.price.amount !== product.price.amount
 				) {
 					product.price.amount = productInBasket.price.amount;
-					this.callToast();
+					this.notify('Prices could have changed');
 				}
 
 				return product;

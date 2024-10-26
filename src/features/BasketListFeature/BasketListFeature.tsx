@@ -1,37 +1,42 @@
 'use client';
 
 import React from 'react';
-import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
 import { BasketCard } from './BasketCard';
-import { useGetMainPageProductsList } from '../ProductsListFeature/hooks/useGetMainPageProductsList';
+import { useGetBasketFeature } from './hooks/useGetBasketFeature';
 
 export const BasketListFeature = () => {
-	const { basketManager } = useGetBasketManager();
-	useGetMainPageProductsList();
+	const {
+		isEmpty,
+		productsInTheBasket,
+		getProductQuantityInBasket,
+		clearTheBasket,
+	} = useGetBasketFeature();
 
-	if (!basketManager.basket.getProductsIds.length) {
-		return <div className='text-center text-lg font-bold'>Basket is empty</div>;
+	if (isEmpty) {
+		return (
+			<div className='text-center text-lg font-bold'>The basket is empty</div>
+		);
 	}
 
 	return (
 		<section>
 			<div className='grid gap-2 grid-cols-1 justify-items-center'>
-				{basketManager.basket.products.map(product => (
+				{productsInTheBasket.map(product => (
 					<BasketCard
 						key={product.id}
 						title={product.title}
 						description={product.description}
 						price={product.price.amount}
-						countInBasket={basketManager.basket.getProductCountById(product.id)}
+						countInBasket={getProductQuantityInBasket(product.id)}
 					/>
 				))}
 			</div>
 
 			<button
 				className='flex bg-red-500 hover:bg-red-700 text-white font-bold mt-4 py-2 px-4 rounded mx-auto'
-				onClick={() => basketManager.handleClearBasket()}
+				onClick={clearTheBasket}
 			>
-				Clear basket
+				Clear the basket
 			</button>
 		</section>
 	);

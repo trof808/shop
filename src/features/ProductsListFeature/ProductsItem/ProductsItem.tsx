@@ -2,7 +2,10 @@
 
 import React, { memo } from 'react';
 import { ProductButtonForBasket } from './components/ProductButtonForBasket';
-import { ProductItemActions, ProductItemDataView } from '../types';
+import {
+	ProductItemActions,
+	ProductItemDataView,
+} from '@/entities/Products/types';
 
 export type ProductsItemProps = ProductItemDataView & ProductItemActions;
 

@@ -1,5 +1,7 @@
 import { PriceType } from '@/shared/types/price';
-import { ProductId, CategoryId } from '@/shared/types/product';
+
+export type ProductId = number;
+export type CategoryId = number;
 
 export interface ProductType {
 	id: ProductId;
@@ -28,8 +30,3 @@ export type ProductLoadActions = {
 	fetchNextPage: () => void;
 	hasNextPage: boolean;
 };
-
-export interface SettedProductsType extends ProductType {
-	addToBasketAction: () => void;
-	removeFromBasketAction: () => void;
-}

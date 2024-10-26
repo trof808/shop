@@ -7,7 +7,7 @@ import {
 	ProductItemActions,
 	ProductItemDataView,
 	ProductLoadActions,
-} from './types';
+} from '@/entities/Products/types';
 
 type Props = ProductItemActions &
 	ProductLoadActions & {

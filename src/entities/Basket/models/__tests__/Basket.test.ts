@@ -100,7 +100,7 @@ describe('Basket', () => {
 			});
 		});
 
-		test('should clear basket correctly', () => {
+		test('should clear the basket correctly', () => {
 			basket.addItem(product);
 			basket.addItem(product2);
 			basket.clearProducts();

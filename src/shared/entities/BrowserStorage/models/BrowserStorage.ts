@@ -31,3 +31,5 @@ export class SessionStorage implements BrowserStorage {
 		sessionStorage.removeItem(key);
 	}
 }
+
+export const localStorageInstance = new LocalStorage();

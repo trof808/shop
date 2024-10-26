@@ -1,4 +1,4 @@
-import { ProductId } from '@/shared/types/product';
+import { ProductId } from '@/entities/Products/types';
 import { IBasket, IBasketProduct } from '../types';
 
 export class Basket {

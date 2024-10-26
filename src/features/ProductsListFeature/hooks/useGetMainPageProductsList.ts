@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
-import { ProductId } from '@/shared/types/product';
 import { useGetProducts } from '@/entities/Products/hooks/useGetProducts';
-import { ProductItemDataView } from '../types';
+import { ProductId, ProductItemDataView } from '@/entities/Products/types';
 
 export const useGetMainPageProductsList = () => {
 	const { basketManager } = useGetBasketManager();

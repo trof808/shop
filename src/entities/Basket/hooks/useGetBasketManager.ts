@@ -3,7 +3,10 @@
 import { BasketManager } from '../models/BasketManager';
 import { basketStore } from '../store/basketStore';
 import { useToast } from '@/shared/hooks/useToast';
-import { LocalStorage } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
+import {
+	LocalStorage,
+	localStorageInstance,
+} from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 import { Basket } from '../models/Basket';
 import { BASKET_KEY } from '../models/constants';
 
@@ -14,15 +17,14 @@ export const useGetBasketManager = () => {
 
 	// toast
 	const { toast } = useToast();
-	const callToast = () =>
+	const callToast = (message: string) =>
 		toast({
 			title: 'Warning!',
-			description: 'Prices could have changed',
+			description: message,
 			variant: 'warning',
 		});
 
 	// localStorage
-	const localStorageInstance = new LocalStorage();
 	const updateBrowserStorage = (basket: Basket) =>
 		localStorageInstance.set(BASKET_KEY, JSON.stringify(basket));
 	const getBrowserStorage = () => localStorageInstance.get(BASKET_KEY);

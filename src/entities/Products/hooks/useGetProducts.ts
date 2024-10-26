@@ -1,6 +1,6 @@
-import { productsApiService } from '@/features/ProductsListFeature/services/productsApiService';
-import { productMapping } from '@/features/ProductsListFeature/stores/mapping/productsMapping';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { productMapping } from '../mapping/productsMapping';
+import { productsApiService } from '../services/productsApiService';
 
 export const useGetProducts = () => {
 	const limit = 100;

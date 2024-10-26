@@ -1,8 +1,8 @@
 import { path } from 'ramda';
 import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
-import { APIProduct } from '../../services/productsApiService.types';
-import { ProductType } from '../../types';
+import { APIProduct } from '../services/productsApiService.types';
+import { ProductType } from '../types';
 
 export const productMapping = (
 	products: APIProduct['products']

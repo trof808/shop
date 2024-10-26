@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useVirtualList = <ItemsType>(
 	items: ItemsType[],
@@ -8,16 +8,15 @@ export const useVirtualList = <ItemsType>(
 	const [listHeight, setListHeight] = useState(0);
 	const [visibleItems, setVisibleItems] = useState(items.slice(0, 0));
 	const listRef = useRef<HTMLDivElement>(null);
+	const startIndex = Math.floor(listScrollTop / itemHeight);
+	const endIndex = Math.min(
+		startIndex + Math.ceil(listHeight / itemHeight) + 2,
+		items.length
+	);
 
-	const updateVisibleItems = () => {
-		const startIndex = Math.floor(listScrollTop / itemHeight);
-		const endIndex = Math.min(
-			startIndex + Math.ceil(listHeight / itemHeight) + 2,
-			items.length
-		);
-
+	const updateVisibleItems = useCallback(() => {
 		setVisibleItems(items.slice(startIndex, endIndex));
-	};
+	}, [startIndex, endIndex, items]);
 
 	useEffect(() => {
 		if (listRef.current) {
@@ -27,7 +26,7 @@ export const useVirtualList = <ItemsType>(
 
 	useEffect(() => {
 		updateVisibleItems();
-	}, [listScrollTop, listHeight, items]);
+	}, [updateVisibleItems, listHeight, startIndex, endIndex]);
 
 	const handleScroll = () => {
 		if (listRef.current) {

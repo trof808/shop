@@ -1,4 +1,3 @@
-import { toast } from '@/shared/hooks/useToast';
 import { IBasket } from '../../types';
 import { BasketManager } from '../BasketManager';
 import { LocalStorage } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
@@ -43,18 +42,13 @@ describe('BasketManager', () => {
 				products: [],
 				productsCount: {},
 			};
-			const callToast = () =>
-				toast({
-					title: 'Warning!',
-					description: 'Prices could have changed',
-					variant: 'warning',
-				});
+			const notify = vi.fn();
 			const updateBrowserStorage = (basket: Basket) =>
 				localStorageInstance.set(BASKET_KEY, JSON.stringify(basket));
 			const getBrowserStorage = () => localStorageInstance.get(BASKET_KEY);
 			basketManager = new BasketManager(
 				updateStoreMock,
-				callToast,
+				notify,
 				defaultBasketState,
 				updateBrowserStorage,
 				getBrowserStorage
@@ -89,7 +83,7 @@ describe('BasketManager', () => {
 			expect(updateStoreMock).toHaveBeenCalled();
 		});
 
-		test('should clear basket and sync data', () => {
+		test('should clear the basket and sync data', () => {
 			basketManager.handleAddItemToBasket(product);
 			basketManager.handleClearBasket();
 
