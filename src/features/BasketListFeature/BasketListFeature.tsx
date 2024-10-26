@@ -3,11 +3,16 @@
 import React from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
 import { BasketCard } from './BasketCard';
-import { useGetMainPageProductsList } from '../ProductsListFeature/hooks/useGetMainPageProductsList';
+// import { useGetMainPageProductsList } from '../ProductsListFeature/hooks/useGetMainPageProductsList';
+import { useGetProducts } from '@/entities/Products/hooks/useGetProducts';
 
 export const BasketListFeature = () => {
-	const { basketManager } = useGetBasketManager();
-	useGetMainPageProductsList();
+	// const { basketManager } = useGetBasketManager();
+	// // Почему пришлось тут использовать хук из другой фичи
+	// useGetProducts({ ids: basketManager.basket.getProductsIds });
+
+	// Создать хук под фичу и положить туда то что выше
+	// const { isEmpty, basketProducts, handleClearBasket } = useGetBasketFeature();
 
 	if (!basketManager.basket.getProductsIds.length) {
 		return <div className='text-center text-lg font-bold'>Basket is empty</div>;

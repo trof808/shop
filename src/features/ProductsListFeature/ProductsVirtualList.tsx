@@ -22,7 +22,7 @@ export const ProductsVirtualList = ({
 }: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
 		useVirtualList<ProductItemDataView>(products, 200);
-
+	
 	useInfiniteScroll(listRef, () => {
 		if (hasNextPage) {
 			fetchNextPage();

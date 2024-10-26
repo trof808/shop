@@ -54,6 +54,7 @@ async function getProductItemElements(page: Page) {
 	const removeToBasketFirstBtn = await page
 		.getByTestId('removeFromBasketBtn')
 		.first();
+	// тут вроде можно без await
 	const countInBasket = await page.getByTestId('countInBasket').first();
 	return { addToBasketFirstBtn, removeToBasketFirstBtn, countInBasket };
 }

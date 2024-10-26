@@ -20,6 +20,8 @@ export const useVirtualList = <ItemsType>(
 	};
 
 	useEffect(() => {
+		// Можно попробовать оптимизировать через debounce
+		// Или сравнивать prevScrollHeight и новый scrollHeight что разница между ними равна itemHeight и тогда обновлять
 		if (listRef.current) {
 			setListHeight(listRef.current.clientHeight);
 		}

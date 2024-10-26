@@ -4,6 +4,7 @@ import { ProductId } from '@/shared/types/product';
 
 export class BasketManager {
 	updateStore: (basket: IBasket) => void;
+	// notify: ({ message }: { message: string }) => void;
 	callToast: () => void;
 	basket: Basket;
 	updateBrowserStorage: (basket: Basket) => void;
@@ -17,6 +18,7 @@ export class BasketManager {
 		getBrowserStorage: () => string | null
 	) {
 		this.updateStore = updateStore;
+		// notify
 		this.callToast = callToast;
 		this.basket = new Basket(defaultBasketState);
 		this.updateBrowserStorage = updateBrowserStorage;

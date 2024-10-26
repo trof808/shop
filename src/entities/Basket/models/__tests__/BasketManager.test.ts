@@ -43,6 +43,7 @@ describe('BasketManager', () => {
 				products: [],
 				productsCount: {},
 			};
+			// Можно не юзать прям toast а просто функцию заглушку
 			const callToast = () =>
 				toast({
 					title: 'Warning!',
