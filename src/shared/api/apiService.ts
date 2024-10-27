@@ -1,6 +1,7 @@
 import { host } from '@/shared/constants';
 import axios from 'axios';
 
+// TODO: сейчас в get парамеметры передаются через объект, а в create через переменные
 export abstract class ApiService {
 	public async get<ResponseType>({
 		path = '',
@@ -24,7 +25,7 @@ export abstract class ApiService {
 			method: 'POST',
 			data: body,
 			url: `${host}${path}`,
-		});
+		}).then(response => response.data);
 	}
 
 	public async update<ResponseType, PayloadType>(

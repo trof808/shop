@@ -2,8 +2,6 @@ import { ApiService } from '@/shared/api/apiService';
 import { APIProductsFilters } from './productsFiltersApiService.types';
 import { FilterType } from '../types';
 
-const PRODUCTS_FILTERS_URL_API = '';
-
 export const FILTER_TYPE_SEPARATOR_MAPPER: Record<FilterType, string> = {
 	range: '.',
 	list: '_',
@@ -65,6 +63,4 @@ class ProductsFiltersApiService extends ApiService {
 	}
 }
 
-export const productsFiltersApiService = new ProductsFiltersApiService(
-	PRODUCTS_FILTERS_URL_API
-);
+export const productsFiltersApiService = new ProductsFiltersApiService();

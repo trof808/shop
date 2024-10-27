@@ -1,8 +1,8 @@
 import { IBasket } from '../../types';
 import { BasketManager } from '../BasketManager';
-import { LocalStorage } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 import { Basket } from '../Basket';
 import { BASKET_KEY } from '../constants';
+import { localStorageInstance } from '@/entities/BrowserStorage/models/BrowserStorage';
 
 const product = {
 	id: 1,
@@ -33,7 +33,6 @@ describe('BasketManager', () => {
 	let updateStoreMock: (basket: IBasket) => void;
 	let defaultBasketState: IBasket;
 	let basketManager: BasketManager;
-	const localStorageInstance = new LocalStorage();
 
 	describe('should work correctly', () => {
 		beforeEach(() => {

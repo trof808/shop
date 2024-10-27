@@ -7,4 +7,6 @@ export const PagesRoutes = {
 	HOME: '/',
 	FILTERS: '/filters',
 	BASKET: '/basket',
+	LOGIN: '/login',
+	REGISTER: '/register',
 };

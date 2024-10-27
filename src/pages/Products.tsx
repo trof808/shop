@@ -5,7 +5,7 @@ import { ProductsListFeature } from '@/features/ProductsListFeature/ProductsList
 export const Products = () => {
 	return (
 		<>
-			<div className='flex p-4 flex-col gap-4'>
+			<div className='flex p-4 pt-0 flex-col gap-4'>
 				<LinkToFiltersButton />
 
 				<div className='mb-[85px]'>
