@@ -6,8 +6,10 @@ import { PagesRoutes } from '@/shared/constants';
 import { cookieExpirationTime, cookieTokenName } from '../constants';
 import { useAuthToast } from './useAuthToast';
 import { cookieStorageInstance } from '@/entities/BrowserStorage/models/BrowserStorage';
+// import { useContext } from 'react';
 
 export const useAuth = () => {
+	// return { ...useContext(AuthContext) }
 	const {
 		authenticationSuccessToast,
 		authenticationErrorToast,

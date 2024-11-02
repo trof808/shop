@@ -5,6 +5,8 @@ import Cookie from 'js-cookie';
 interface BrowserStorage {
 	get(key: string): string | null;
 	set(key: string, value: string): void;
+	// Сделать перегрузку
+	// set(key: string, value: string, config: {}): void;
 	delete(key: string): void;
 }
 
