@@ -5,7 +5,7 @@ import { basketStore } from '../store/basketStore';
 import { useToast } from '@/shared/hooks/useToast';
 import { Basket } from '../models/Basket';
 import { BASKET_KEY } from '../models/constants';
-import { localStorageInstance } from '@/entities/BrowserStorage/models/BrowserStorage';
+import { localStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 export const useGetBasketManager = () => {
 	// basket

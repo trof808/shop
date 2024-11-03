@@ -2,7 +2,7 @@ import { IBasket } from '../../types';
 import { BasketManager } from '../BasketManager';
 import { Basket } from '../Basket';
 import { BASKET_KEY } from '../constants';
-import { localStorageInstance } from '@/entities/BrowserStorage/models/BrowserStorage';
+import { localStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 const product = {
 	id: 1,

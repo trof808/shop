@@ -1,12 +1,5 @@
-import Cookie from 'js-cookie';
-
-// TODO: точно ли не лишнее это все? код не сокращается и не дополняется, нужна ли тогда обертка?
-// не становится ли более запутанно?
-interface BrowserStorage {
-	get(key: string): string | null;
-	set(key: string, value: string): void;
-	delete(key: string): void;
-}
+import Cookies from 'js-cookie';
+import { BrowserStorage, CookieAttributes } from '../types';
 
 export class LocalStorage implements BrowserStorage {
 	get(key: string) {
@@ -38,18 +31,20 @@ export class SessionStorage implements BrowserStorage {
 
 export class CookieStorage implements BrowserStorage {
 	get(key: string) {
-		return Cookie.get(key) || null;
+		return Cookies.get(key) || null;
 	}
 
-	set(key: string, value: string, config?: { expires: number }): void {
-		Cookie.set(key, value, config);
+	set(key: string, value: string): void;
+	set(key: string, value: string, config: CookieAttributes): void;
+	set(key: string, value: string, config?: CookieAttributes): void {
+		Cookies.set(key, value, config || {});
 	}
 
 	delete(key: string): void {
-		Cookie.remove(key);
+		Cookies.remove(key);
 	}
 }
 
 export const localStorageInstance = new LocalStorage();
-export const sesstionStorageInstance = new SessionStorage();
+export const sessionStorageInstance = new SessionStorage();
 export const cookieStorageInstance = new CookieStorage();
