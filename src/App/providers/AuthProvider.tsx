@@ -29,10 +29,12 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 		registrationErrorToast,
 	} = useAuthToast();
 	const [token, setToken] = useState<string | null>(null);
+	const [isLoadingChecks, setIsLoadingChecks] = useState(true);
 	const router = useRouter();
 
 	useEffect(() => {
 		setToken(browserStorage.get(cookieTokenName));
+		setIsLoadingChecks(false);
 	}, []);
 
 	const authentication = useMutation({
@@ -73,9 +75,14 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 		setToken(null);
 	};
 
+	if (isLoadingChecks) {
+		return <div>loading</div>;
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
+				token,
 				isAuthorized,
 				isLoading,
 				isSuccessRegistration,

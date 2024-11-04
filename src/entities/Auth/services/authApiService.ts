@@ -8,11 +8,14 @@ class AuthApiService extends ApiService {
 			role: 'client',
 		};
 
-		return super.create('auth/register', body);
+		return super.create({ path: 'auth/register', body });
 	}
 
 	public async postLogIn(authBody: AuthBody): Promise<AuthToken> {
-		return super.create<AuthToken, AuthBody>('auth/login', authBody);
+		return super.create<AuthToken, AuthBody>({
+			path: 'auth/login',
+			body: authBody,
+		});
 	}
 }
 

@@ -1,6 +1,7 @@
 import { AuthBody } from '@/entities/Auth/services/authApiService.types';
 
 export interface AuthContextType {
+	token: string | null;
 	isAuthorized: boolean;
 	isLoading: boolean;
 	isSuccessRegistration: boolean;
