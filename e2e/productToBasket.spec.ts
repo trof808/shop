@@ -11,7 +11,7 @@ test.describe.serial('productToBasket', () => {
 		await page.close();
 	});
 
-	test('shpuld open product page', async () => {
+	test('should open product page', async () => {
 		await page.goto('http://localhost:3000');
 	});
 
