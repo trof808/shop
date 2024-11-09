@@ -1,3 +1,4 @@
+// Разделить интерфейс
 export interface APIBasket {
 	id: number;
 	user_id: number;

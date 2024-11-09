@@ -3,6 +3,13 @@ import axios from 'axios';
 
 // TODO: сейчас в get парамеметры передаются через объект, а в create через переменные
 export abstract class ApiService {
+	withAuth = false;
+
+	// По умолчанию false
+	// constructor({ withAuth }) {
+	// 	this.withAuth = withAuth;
+	// }
+
 	public async get<ResponseType>({
 		path = '',
 		params = {},
@@ -20,6 +27,8 @@ export abstract class ApiService {
 		}).then(response => response.data);
 	}
 
+	// типизировать body
+	// public async create<ResponseType, PayloadType>({
 	public async create<ResponseType>({
 		path = '',
 		body = {},
@@ -27,6 +36,7 @@ export abstract class ApiService {
 	}: {
 		path?: string;
 		body?: Record<string, any>;
+		// Тут нужно использовать тип из axios
 		headers?: Record<string, any>;
 	} = {}): Promise<ResponseType> {
 		return await axios({

@@ -19,6 +19,8 @@ export const useGetBasketManager = () => {
 	// basket
 	const basketState = basketStore().getBasketState();
 	const updateBasketState = basketStore().updateBasketState;
+
+	// Подумать над тем, чтобы сделать из этого сервис (по сути нам нужен react query потому что у него есть стейты и возможность оптимизации)
 	const { getBasket } = useGetBasket();
 	const { saveCart } = usePostBasket();
 	const { clearCart } = useDeleteBasket();
@@ -32,7 +34,7 @@ export const useGetBasketManager = () => {
 			variant: 'warning',
 		});
 
-	// localStorage
+	// Лучше передавать сразу весь инстанс а не по отдельности методы
 	const updateBrowserStorage = (basket: Basket) =>
 		localStorageInstance.set(BASKET_KEY, JSON.stringify(basket));
 	const getBrowserStorage = () => localStorageInstance.get(BASKET_KEY);

@@ -4,6 +4,10 @@ import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIBasket } from '../services/basketApiService.types';
 import { IBasket } from '../types';
 
+// Добавить валидацию api в рантайме, для определения ошибок
+// Изучить доку и возможности, попробовать применить
+// https://github.com/ajv-validator/ajv
+// Валидация контракта, если на бэкенде что-то изменилось, а мы не знаем
 export const basketMapping = (products: APIBasket): IBasket => {
 	const productsItems = path(['items'], products);
 

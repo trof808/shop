@@ -18,6 +18,7 @@ class BasketApiService extends ApiService {
 		body: BodyCartProductAPI,
 		token: TokenType
 	): Promise<string> {
+		// Перенести в ApiService
 		const headers = {
 			Authorization: 'Bearer ' + token,
 		};
@@ -41,4 +42,6 @@ class BasketApiService extends ApiService {
 	}
 }
 
+// передавать авторизацию через конструктор, и подставлять токен внутри ApiService
+// export const basketApiService = new BasketApiService({ withAuth: true });
 export const basketApiService = new BasketApiService();

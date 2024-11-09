@@ -7,6 +7,7 @@ import {
 } from '../types';
 import { ProductId } from '@/entities/Products/types';
 
+// Подумать над тем, чтобы реализовать через Dependency Injection
 export class BasketManager {
 	isAuthorized: boolean;
 	updateStore: (basket: IBasket) => void;
@@ -124,6 +125,7 @@ export class BasketManager {
 	}
 
 	async restoreBasketFromServer() {
+		// Следить за названиями переменных
 		const basketList = await this.getBasketFromServer();
 
 		if (basketList.products.length) {
