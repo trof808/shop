@@ -8,6 +8,10 @@ export const basketMapping = (products: APIBasket): IBasket => {
 	const productsItems = path(['items'], products);
 
 	const productsMapping = () => {
+		if (!Array.isArray(productsItems)) {
+			return [];
+		}
+
 		return productsItems.map(item => ({
 			id: checkNumberField(path(['product', 'id'], item)),
 			title: checkStringField(path(['product', 'title'], item)),
@@ -24,6 +28,10 @@ export const basketMapping = (products: APIBasket): IBasket => {
 	};
 
 	const productsCountMapping = () => {
+		if (!Array.isArray(productsItems)) {
+			return {};
+		}
+
 		return productsItems.reduce((acc: Record<number, number>, item) => {
 			acc[item.product.id] = item.product.availableCount;
 			return acc;
