@@ -1,44 +1,29 @@
 import { ApiService } from '@/shared/api/apiService';
 import { APIBasket } from './basketApiService.types';
-import { BodyCartProduct, BodyCartProductAPI, TokenType } from '../types';
+import { BodyCartProductAPI } from '../types';
+import { cookieStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 class BasketApiService extends ApiService {
-	public async getCart(token: TokenType): Promise<APIBasket> {
-		const headers = {
-			Authorization: 'Bearer ' + token,
-		};
-
+	public async getCart(): Promise<APIBasket> {
 		return super.get<APIBasket>({
 			path: 'cart',
-			headers,
 		});
 	}
 
-	public async postCart(
-		body: BodyCartProductAPI,
-		token: TokenType
-	): Promise<string> {
-		const headers = {
-			Authorization: 'Bearer ' + token,
-		};
-
+	public async postCart(body: BodyCartProductAPI): Promise<string> {
 		return super.create<string>({
 			path: 'cart/save',
 			body,
-			headers,
 		});
 	}
 
-	public async deleteCart(token: TokenType): Promise<string> {
-		const headers = {
-			Authorization: 'Bearer ' + token,
-		};
-
+	public async deleteCart(): Promise<string> {
 		return super.delete<string>({
 			path: 'cart/clear',
-			headers,
 		});
 	}
 }
 
-export const basketApiService = new BasketApiService();
+export const basketApiService = new BasketApiService({
+	browserStorage: cookieStorageInstance,
+});

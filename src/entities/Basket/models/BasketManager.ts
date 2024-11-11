@@ -6,40 +6,34 @@ import {
 	IBasketProduct,
 } from '../types';
 import { ProductId } from '@/entities/Products/types';
+import { BrowserStorage } from '@/shared/entities/BrowserStorage/types';
+import { BASKET_KEY } from './constants';
 
 export class BasketManager {
 	isAuthorized: boolean;
+	basket: Basket;
 	updateStore: (basket: IBasket) => void;
 	notify: (message: string) => void;
-	basket: Basket;
-	updateBrowserStorage: (basket: Basket) => void;
-	getBrowserStorage: () => string | null;
+	browserStorage: BrowserStorage;
 	getBasketFromServer: () => Promise<IBasket>;
-	deleteBrowserStorage: () => void;
 	updateServerStorage: (cartProducts: BodyCartProduct[]) => void;
 	deleteServerStorage: () => void;
 
-	constructor(params: BasketConstructorParams) {
-		const {
-			isAuthorized,
-			updateStore,
-			notify,
-			defaultBasketState,
-			updateBrowserStorage,
-			getBrowserStorage,
-			getBasketFromServer,
-			deleteBrowserStorage,
-			updateServerStorage,
-			deleteServerStorage,
-		} = params;
-
+	constructor({
+		isAuthorized,
+		basket,
+		updateStore,
+		notify,
+		browserStorage,
+		getBasketFromServer,
+		updateServerStorage,
+		deleteServerStorage,
+	}: BasketConstructorParams) {
 		this.isAuthorized = isAuthorized;
+		this.basket = basket;
 		this.updateStore = updateStore;
 		this.notify = notify;
-		this.basket = new Basket(defaultBasketState);
-		this.updateBrowserStorage = updateBrowserStorage;
-		this.getBrowserStorage = getBrowserStorage;
-		this.deleteBrowserStorage = deleteBrowserStorage;
+		this.browserStorage = browserStorage;
 		this.getBasketFromServer = getBasketFromServer;
 		this.updateServerStorage = updateServerStorage;
 		this.deleteServerStorage = deleteServerStorage;
@@ -69,7 +63,7 @@ export class BasketManager {
 	}
 
 	handleUpdateBrowserStorage() {
-		this.updateBrowserStorage(this.basket);
+		this.browserStorage.set(BASKET_KEY, JSON.stringify(this.basket));
 	}
 
 	handleUpdateServerStorage(products: Basket['productsCount']) {
@@ -111,7 +105,7 @@ export class BasketManager {
 	}
 
 	restoreBasketFromLocalStorage() {
-		const basketFromLocalStorage = this.getBrowserStorage();
+		const basketFromLocalStorage = this.browserStorage.get(BASKET_KEY);
 
 		if (basketFromLocalStorage) {
 			const basketFromLocalStorageObj = JSON.parse(basketFromLocalStorage);
@@ -124,12 +118,15 @@ export class BasketManager {
 	}
 
 	async restoreBasketFromServer() {
-		const basketList = await this.getBasketFromServer();
+		const basketFromServer = await this.getBasketFromServer();
 
-		if (basketList.products.length) {
-			this.updateBasket(basketList.products, basketList.productsCount);
+		if (basketFromServer.products.length) {
+			this.updateBasket(
+				basketFromServer.products,
+				basketFromServer.productsCount
+			);
 		} else {
-			const basketFromLocalStorage = this.getBrowserStorage();
+			const basketFromLocalStorage = this.browserStorage.get(BASKET_KEY);
 
 			if (basketFromLocalStorage) {
 				const basketFromLocalStorageObj = JSON.parse(basketFromLocalStorage);
@@ -138,7 +135,7 @@ export class BasketManager {
 			}
 		}
 
-		this.deleteBrowserStorage();
+		this.browserStorage.delete(BASKET_KEY);
 	}
 
 	restoreBasket() {
@@ -167,6 +164,6 @@ export class BasketManager {
 			this.deleteServerStorage();
 		}
 
-		return this.deleteBrowserStorage();
+		this.browserStorage.delete(BASKET_KEY);
 	}
 }

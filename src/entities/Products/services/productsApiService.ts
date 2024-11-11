@@ -1,5 +1,6 @@
 import { ApiService } from '@/shared/api/apiService';
 import { APIProduct } from './productsApiService.types';
+import { cookieStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 class ProductsApiService extends ApiService {
 	public async getProducts(page: number, limit: number): Promise<APIProduct> {
@@ -9,4 +10,6 @@ class ProductsApiService extends ApiService {
 	}
 }
 
-export const productsApiService = new ProductsApiService();
+export const productsApiService = new ProductsApiService({
+	browserStorage: cookieStorageInstance,
+});

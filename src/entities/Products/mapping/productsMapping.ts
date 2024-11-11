@@ -3,10 +3,19 @@ import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIProduct } from '../services/productsApiService.types';
 import { ProductType } from '../types';
+import Ajv from 'ajv';
+import { apiProductSchema } from './schema';
+
+const ajv = new Ajv();
+const validate = ajv.compile(apiProductSchema);
 
 export const productMapping = (
 	products: APIProduct['products']
 ): ProductType[] => {
+	if (!validate(products)) {
+		console.error(validate.errors);
+	}
+
 	if (!Array.isArray(products)) {
 		return [];
 	}

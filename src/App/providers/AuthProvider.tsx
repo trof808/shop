@@ -1,9 +1,6 @@
 import { createContext } from 'react';
 
-import {
-	cookieExpirationTime,
-	cookieTokenName,
-} from '@/entities/Auth/constants';
+import { cookieExpirationTime, cookieTokenName } from '@/shared/constants';
 import { useAuthToast } from '@/entities/Auth/hooks/useAuthToast';
 import { authApiService } from '@/entities/Auth/services/authApiService';
 import { AuthBody } from '@/entities/Auth/services/authApiService.types';

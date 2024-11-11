@@ -3,6 +3,11 @@ import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIProductsFilters } from '../../services/productsFiltersApiService.types';
 import { ProductsFilters } from '../store.types';
+import Ajv from 'ajv';
+import { apiProductsFiltersSchema } from './schema';
+
+const ajv = new Ajv();
+const validate = ajv.compile(apiProductsFiltersSchema);
 
 const propertiesMapping = (
 	properties: APIProductsFilters['properties']
@@ -21,6 +26,10 @@ const propertiesMapping = (
 export const productsFiltersMapping = (
 	filters: APIProductsFilters[]
 ): ProductsFilters[] => {
+	if (!validate(filters)) {
+		console.error(validate.errors);
+	}
+
 	if (!Array.isArray(filters)) {
 		return [];
 	}

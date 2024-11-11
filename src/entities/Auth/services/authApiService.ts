@@ -1,5 +1,6 @@
 import { ApiService } from '@/shared/api/apiService';
 import { AuthToken, AuthBody } from './authApiService.types';
+import { cookieStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 class AuthApiService extends ApiService {
 	public async postRegister(authBody: AuthBody) {
@@ -19,4 +20,6 @@ class AuthApiService extends ApiService {
 	}
 }
 
-export const authApiService = new AuthApiService();
+export const authApiService = new AuthApiService({
+	browserStorage: cookieStorageInstance,
+});

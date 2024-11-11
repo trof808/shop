@@ -3,8 +3,17 @@ import { checkNumberField } from '@/shared/mapping/validation/checkNumberField';
 import { checkStringField } from '@/shared/mapping/validation/checkStringField';
 import { APIBasket } from '../services/basketApiService.types';
 import { IBasket } from '../types';
+import Ajv from 'ajv';
+import { apiBasketSchema } from './schema';
+
+const ajv = new Ajv();
+const validate = ajv.compile(apiBasketSchema);
 
 export const basketMapping = (products: APIBasket): IBasket => {
+	if (!validate(products)) {
+		console.error(validate.errors);
+	}
+
 	const productsItems = path(['items'], products);
 
 	const productsMapping = () => {
@@ -33,7 +42,7 @@ export const basketMapping = (products: APIBasket): IBasket => {
 		}
 
 		return productsItems.reduce((acc: Record<number, number>, item) => {
-			acc[item.product.id] = item.product.availableCount;
+			acc[item.product.id] = item.quantity;
 			return acc;
 		}, {});
 	};
