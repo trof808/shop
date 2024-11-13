@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 import { BasketCard } from './BasketCard';
 import { useGetBasketFeature } from './hooks/useGetBasketFeature';

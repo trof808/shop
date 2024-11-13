@@ -1,1 +1,1 @@
-export { Products as default } from '@/pages/Products';
+export { default } from '@/pages/Products';

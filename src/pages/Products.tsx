@@ -2,7 +2,7 @@ import { BasketButtonFeature } from '@/features/BasketButtonFeature/BasketButton
 import { LinkToFiltersButton } from '@/features/LinkToFiltersButton/LinkToFiltersButton';
 import { ProductsListFeature } from '@/features/ProductsListFeature/ProductsListFeature';
 
-export const Products = () => {
+export default function Products() {
 	return (
 		<>
 			<div className='flex p-4 pt-0 flex-col gap-4'>
@@ -16,4 +16,4 @@ export const Products = () => {
 			<BasketButtonFeature />
 		</>
 	);
-};
+}

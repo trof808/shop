@@ -1,1 +1,1 @@
-export { Filters as default } from '@/pages/Filters';
+export { default } from '@/pages/Filters';

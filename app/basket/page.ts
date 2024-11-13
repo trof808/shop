@@ -1,1 +1,1 @@
-export { Basket as default } from '@/pages/Basket';
+export { default } from '@/pages/Basket';

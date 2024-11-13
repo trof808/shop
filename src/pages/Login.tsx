@@ -2,7 +2,7 @@
 import { useAuth } from '@/entities/Auth/hooks/useAuth';
 import { AuthFormFeature } from '@/features/AuthFormFeature/AuthFormFeature';
 
-export const Login = () => {
+export default function Login() {
 	const { toAuthenticate } = useAuth();
 
 	return (
@@ -12,4 +12,4 @@ export const Login = () => {
 			submitBtnText='Log in'
 		/>
 	);
-};
+}

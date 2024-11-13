@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-
 import { cookieExpirationTime, cookieTokenName } from '@/shared/constants';
 import { useAuthToast } from '@/entities/Auth/hooks/useAuthToast';
 import { authApiService } from '@/entities/Auth/services/authApiService';
@@ -79,7 +78,6 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 	return (
 		<AuthContext.Provider
 			value={{
-				token,
 				isAuthorized,
 				isLoading,
 				isSuccessRegistration,

@@ -1,5 +1,5 @@
 import { BasketListFeature } from '@/features/BasketListFeature/BasketListFeature';
 
-export const Basket = () => {
+export default function Basket() {
 	return <BasketListFeature />;
-};
+}

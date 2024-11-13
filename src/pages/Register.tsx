@@ -2,7 +2,7 @@
 import { useAuth } from '@/entities/Auth/hooks/useAuth';
 import { AuthFormFeature } from '@/features/AuthFormFeature/AuthFormFeature';
 
-export const Register = () => {
+export default function Register() {
 	const { register } = useAuth();
 
 	return (
@@ -12,4 +12,4 @@ export const Register = () => {
 			submitBtnText='Sign in'
 		/>
 	);
-};
+}

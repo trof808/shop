@@ -1,6 +1,7 @@
 import { ApiService } from '@/shared/api/apiService';
 import { APIProductsFilters } from './productsFiltersApiService.types';
 import { FilterType } from '../types';
+import { cookieStorageInstance } from '@/shared/entities/BrowserStorage/models/BrowserStorage';
 
 export const FILTER_TYPE_SEPARATOR_MAPPER: Record<FilterType, string> = {
 	range: '.',
@@ -63,4 +64,6 @@ class ProductsFiltersApiService extends ApiService {
 	}
 }
 
-export const productsFiltersApiService = new ProductsFiltersApiService();
+export const productsFiltersApiService = new ProductsFiltersApiService({
+	browserStorage: cookieStorageInstance,
+});
