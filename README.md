@@ -9,7 +9,7 @@
 `docker build -t <image_name> -f config/prod/Dockerfile .`
 
 4. Запустить контейнер
-`docker run -p 3000:3000 --name <container_name> <image_name>`
+`docker run -d -p 3000:3000 --name <container_name> <image_name>`
 
 5. Сконфигурировать nginx
 
