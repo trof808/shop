@@ -21,7 +21,7 @@ export const ProductsVirtualList = ({
 	...rest
 }: Props) => {
 	const { listRef, visibleItems, containerProps, wrapperProps } =
-		useVirtualList<ProductItemDataView>(products, 200);
+		useVirtualList<ProductItemDataView>(products, 70);
 
 	useInfiniteScroll(listRef, () => {
 		if (hasNextPage) {
@@ -34,7 +34,7 @@ export const ProductsVirtualList = ({
 			<div {...containerProps}>
 				<div
 					{...wrapperProps}
-					className='grid gap-2 grid-cols-1 justify-items-center'
+					className='flex flex-wrap justify-center gap-4'
 				>
 					{visibleItems.map(product => (
 						<ProductsItem
