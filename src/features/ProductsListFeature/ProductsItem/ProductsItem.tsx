@@ -22,7 +22,7 @@ export const ProductsItem = memo(
 		canRemove,
 	}: ProductsItemProps) => {
 		return (
-			<div data-testid='productCard' className='w-64 h-[200px] bg-sky-100 p-6'>
+			<div data-testid='productCard' className='flex flex-col justify-between w-64 h-[200px] bg-sky-100 p-6'>
 				<div key={id}>
 					<h2 className='text-lg font-semibold'>{title}</h2>
 					<p className='text-gray-700 line-clamp-4'>{description}</p>
