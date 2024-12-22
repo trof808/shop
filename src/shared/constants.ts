@@ -1,4 +1,3 @@
-console.log(import.meta.env.VITE_NODE_ENV);
 export const host =
 	import.meta.env.VITE_NODE_ENV === 'development'
 		? `${import.meta.env.VITE_API_DEV_SERVER}`

@@ -2,20 +2,15 @@
     "compilerOptions": {
         "target": "es2019",
         "module": "commonjs",
-        "lib": [
-            "dom",
-            "esnext"
-        ],
+        "lib": ["dom", "esnext"],
         "jsx": "react-jsx",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true
+        "outDir": "./dist"
     },
-    "include": [
-        "."
-    ]
+    "include": ["server/**/*.ts", "server/**/*.tsx", "src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules"]
 }

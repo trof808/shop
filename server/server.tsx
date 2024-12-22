@@ -1,46 +1,98 @@
-import path from 'path'; // Импортируем модуль path
-import fs from 'fs/promises'; // Импортируем модуль fs/promises
-import React from 'react'; // Добавляем импорт React
+import fs from 'node:fs/promises';
+import Fastify from 'fastify';
+import path from 'node:path';
 import { renderToString } from 'react-dom/server'; // Используем нативный метод renderToString
 import { StaticRouter } from 'react-router'; // Исправляем импорт StaticRouter
 import { App } from '../src/App/App'; // Импортируем компонент App
-import fastify from 'fastify'; // Импортируем fastify
+import { Providers } from '../src/App/providers'
+import dotenv from 'dotenv';
 
-const app = fastify({ logger: true });
+dotenv.config();
 
-// Настройка статических файлов
-app.register(require('@fastify/static'), {
-  root: path.join(__dirname, 'public'),
-});
+// Constants
+const isProduction = process.env.NODE_ENV === 'production';
+const port = process.env.PORT || 5173;
+const base = process.env.BASE || '/';
 
-// Маршрут для рендера страницы
-app.get('*', async (request, reply) => {
-  const context = {};
-  const html = renderToString(
-    <StaticRouter location={request.url}>
-      <App />
-    </StaticRouter>
-  );
+// Cached production assets
+const templateHtml = isProduction
+  ? await fs.readFile('./dist/client/index.html', 'utf-8')
+  : '';
 
-  // Получение шаблона HTML
-  const templatePath = path.resolve('./template.html');
-  const template = await fs.readFile(templatePath, 'utf8');
+// Create Fastify instance
+const fastify = Fastify();
 
-  // Замена плейсхолдеров в шаблоне
-  const renderedHtml = template.replace('<!--SSR-PLACEHOLDER-->', html);
+// Add Vite or respective production middlewares
+//@ts-ignore
+let vite;
+if (!isProduction) {
+  const { createServer } = await import('vite');
+  vite = await createServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+    base,
+  });
+  // @ts-ignore
+  fastify.use(vite.middlewares);
+} else {
+  // // @ts-ignore
+  // const compression = (await import('fastify-compress')).default;
+  // // @ts-ignore
+  // const serveStatic = (await import('fastify-static')).default;
 
-  return reply.type('text/html').send(renderedHtml);
-});
+  // fastify.register(compression);
+  // fastify.register(serveStatic, {
+  //   root: path.join(process.cwd(), 'dist/assets'),
+  //   prefix: base,
+  //   // Serve static files without extensions
+  //   // extensions: ['html', 'js', 'css'], // Uncomment if needed
+  // });
+}
 
-// Запуск сервера
-const start = async () => {
+// Serve HTML
+fastify.all('*', async (req, reply) => {
   try {
-    await app.listen({ port: 3000 });
     // @ts-ignore
-    app.log.info(`server running at ${app.server.address()?.port}`);
-  } catch (err) {
-    app.log.error(err);
-    process.exit(1);
+    const url = req.raw.url.replace(base, '');
+
+    let template;
+    let render;
+
+    if (!isProduction) {
+      // Always read fresh template in development
+      template = await fs.readFile('./index.html', 'utf-8');
+      // @ts-ignore
+      template = await vite.transformIndexHtml(url, template);
+    } else {
+      // template = templateHtml;
+      // render = (await import('./dist/server/entry-server.js')).render;
+    }
+
+    const rendered = renderToString(
+      <StaticRouter location={url}>
+        <Providers>
+          <App />
+        </Providers>
+      </StaticRouter>
+    )
+
+    const html = template
+      .replace(`<!--app-html-->`, rendered ?? '');
+      // .replace(`<!--app-head-->`, rendered.head ?? '')
+
+    reply.status(200).type('text/html').send(html);
+  } catch (e) {
+    // @ts-ignore
+    vite?.ssrFixStacktrace(e);
+    // @ts-ignore
+    console.error(e.stack);
+    // @ts-ignore
+    reply.status(500).send(e.stack);
   }
-};
-start();
+});
+
+// Start http server
+// @ts-ignore
+fastify.listen(port, () => {
+  console.log(`Server started at http://localhost:${port}`);
+});

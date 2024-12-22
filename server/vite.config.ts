@@ -1,18 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
+  root: '.',
+  base: '/',
   build: {
-    target: 'es2019',
-    outDir: 'dist',
+    outDir: 'server_dist',
     minify: false,
     sourcemap: true,
     rollupOptions: {
-      output: {
-        format: 'cjs',
+      input: {
+        main: 'server/server.tsx',
       },
     },
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 })
