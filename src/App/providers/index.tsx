@@ -1,4 +1,4 @@
-'use client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ReactQueryProvider } from './ReactQueryProvider';
 import { AuthProvider } from './AuthProvider';
 import { DataProvider } from './DataProvider';
@@ -11,14 +11,16 @@ interface Props {
 }
 
 export const Providers = ({ children }: Props) => (
-	<ReactQueryProvider>
-		<AuthProvider browserStorage={cookieStorageInstance}>
-			<DataProvider>
-				<HeaderProvider>
-					{children}
-					<Toaster />
-				</HeaderProvider>
-			</DataProvider>
-		</AuthProvider>
-	</ReactQueryProvider>
+	<Router>
+		<ReactQueryProvider>
+			<AuthProvider browserStorage={cookieStorageInstance}>
+				<DataProvider>
+					<HeaderProvider>
+						{children}
+						<Toaster />
+					</HeaderProvider>
+				</DataProvider>
+			</AuthProvider>
+		</ReactQueryProvider>
+	</Router>
 );

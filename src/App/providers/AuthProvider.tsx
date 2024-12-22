@@ -6,10 +6,10 @@ import { AuthBody } from '@/entities/Auth/services/authApiService.types';
 import { PagesRoutes } from '@/shared/constants';
 import { BrowserStorage } from '@/shared/entities/BrowserStorage/types';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { defaultAuthContext } from './constants';
 import { AuthContextType } from './types';
+import { useNavigate } from 'react-router';
 
 interface Props {
 	children: React.ReactNode;
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 	} = useAuthToast();
 	const [token, setToken] = useState<string | null>(null);
 	const [isLoadingChecks, setIsLoadingChecks] = useState(true);
-	const router = useRouter();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setToken(browserStorage.get(cookieTokenName));
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 				expires: cookieExpirationTime,
 			});
 			authenticationSuccessToast();
-			router.push(PagesRoutes.HOME);
+			navigate(PagesRoutes.HOME);
 		},
 		onError: () => {
 			authenticationErrorToast();

@@ -1,7 +1,8 @@
+console.log(import.meta.env.VITE_NODE_ENV);
 export const host =
-	process.env.NODE_ENV === 'development'
-		? `${process.env.NEXT_PUBLIC_API_DEV_SERVER}`
-		: `${process.env.NEXT_PUBLIC_API_PROD_SERVER}`;
+	import.meta.env.VITE_NODE_ENV === 'development'
+		? `${import.meta.env.VITE_API_DEV_SERVER}`
+		: `${import.meta.env.VITE_API_PROD_SERVER}`;
 
 export const PagesRoutes = {
 	HOME: '/',

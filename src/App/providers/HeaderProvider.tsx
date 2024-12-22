@@ -1,7 +1,5 @@
-'use client';
-
 import React from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useLocation, useNavigate } from 'react-router';
 import { PagesRoutes } from '@/shared/constants';
 import { LinkAuthButton } from '@/shared/components/ui/LinkAuthButton/LinkAuthButton';
 import { LinkBackButton } from '@/shared/components/ui/LinkBackButton/LinkBackButton';
@@ -11,16 +9,16 @@ import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager
 export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
 	const { isAuthorized, logOut } = useAuth();
 	const { basketManager } = useGetBasketManager();
-	const pathname = usePathname();
-	const router = useRouter();
-	const hideBackButton = pathname === PagesRoutes.HOME;
+	const location = useLocation();
+	const navigate = useNavigate();
+	const hideBackButton = location.pathname === PagesRoutes.HOME;
 	const hideAuthButtons =
-		pathname === PagesRoutes.REGISTER || pathname === PagesRoutes.LOGIN;
+		location.pathname === PagesRoutes.REGISTER || location.pathname === PagesRoutes.LOGIN;
 
 	const handleLogOutClick = () => {
 		logOut();
 		basketManager.handleClearBasket();
-		router.push(PagesRoutes.LOGIN);
+		navigate(PagesRoutes.LOGIN);
 	};
 
 	return (
