@@ -57,8 +57,9 @@ app.use("*", async (req, reply) => {
       // @ts-ignore
       template = await vite.transformIndexHtml(url, template);
     } else {
+      // Готовим продовый html. Берем html который сбилдился в клиентском бандле
       // template = templateHtml;
-      // render = (await import('./dist/server/entry-server.js')).render;
+      // Если нужно идем также в бандлы чтобы подставить пути до чанков в тег scripts
     }
 
     const platformAPI = createPlatformAPI({
@@ -66,6 +67,11 @@ app.use("*", async (req, reply) => {
         window: createWindowApi(),
       },
     });
+
+    // TODO
+    // Перед тем как сформировать страницу для рендеринга
+    // нужно получить все необходимые данные для отрисовки в зависимости от страницы
+    // И отдать их внутрь дерева компонент, а также прокинуть в глобальный объект для фронта
 
     const rendered = renderToString(
       <PlatformAPIContext.Provider value={platformAPI}>
@@ -77,6 +83,7 @@ app.use("*", async (req, reply) => {
       </PlatformAPIContext.Provider>
     );
 
+    // TODO: В глобальный объект window необходимо прокинуть все данные, которые получили с api
     const html = template.replace(`<!--app-html-->`, rendered ?? "").replace(
       "<head>",
       `<head>

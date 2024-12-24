@@ -26,7 +26,7 @@ export const AuthProvider = ({ children, browserStorage }: Props) => {
 		registrationErrorToast,
 	} = useAuthToast();
 	const [token, setToken] = useState<string | null>(null);
-	const [isLoadingChecks, setIsLoadingChecks] = useState(true);
+	const [isLoadingChecks, setIsLoadingChecks] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {

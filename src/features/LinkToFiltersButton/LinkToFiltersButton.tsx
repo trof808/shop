@@ -1,5 +1,4 @@
-'use client';
-
+import React from 'react';
 import { PagesRoutes } from '@/shared/constants';
 import { Link, useLocation } from 'react-router';
 import { FilterIcon } from '@/shared/icons/FilterIcon';
