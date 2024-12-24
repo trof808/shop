@@ -1,66 +1,59 @@
-import fs from 'node:fs/promises';
-import Fastify from 'fastify';
-import path from 'node:path';
-import { renderToString } from 'react-dom/server'; // Используем нативный метод renderToString
-import { StaticRouter } from 'react-router'; // Исправляем импорт StaticRouter
-import { App } from '../src/App/App'; // Импортируем компонент App
-import { Providers } from '../src/App/providers'
-import dotenv from 'dotenv';
+import fs from "node:fs/promises";
+import path from "node:path";
+import React from 'react';
+import { renderToString } from "react-dom/server"; // Используем нативный метод renderToString
+import { StaticRouter } from "react-router"; // Исправляем импорт StaticRouter
+import { App } from "../src/App/App"; // Импортируем компонент App
+import { Providers } from "../src/App/providers";
+import dotenv from "dotenv";
+import { createPlatformAPI } from "../infrastructure/platform";
+import { createWindowApi } from "../infrastructure/platform/window/server";
+import { PlatformAPIContext } from "../infrastructure/platform/shared/context";
+import express from 'express'
 
 dotenv.config();
 
-// Constants
-const isProduction = process.env.NODE_ENV === 'production';
-const port = process.env.PORT || 5173;
-const base = process.env.BASE || '/';
+const isProduction = process.env.NODE_ENV === "production";
+const port = process.env.PORT || 3000;
+const base = process.env.BASE || "/";
 
-// Cached production assets
 const templateHtml = isProduction
-  ? await fs.readFile('./dist/client/index.html', 'utf-8')
-  : '';
+  ? await fs.readFile("./dist/client/index.html", "utf-8")
+  : "";
 
-// Create Fastify instance
-const fastify = Fastify();
+const app = express()
 
-// Add Vite or respective production middlewares
 //@ts-ignore
 let vite;
+console.log("isProduction", isProduction);
 if (!isProduction) {
-  const { createServer } = await import('vite');
-  vite = await createServer({
-    server: { middlewareMode: true },
+  vite = await (
+    await import('vite')
+  ).createServer({
+    root: process.cwd(),
+    logLevel: 'error',
+    server: {
+      middlewareMode: true,
+      watch: {
+        usePolling: true,
+        interval: 100,
+      },
+    },
     appType: 'custom',
-    base,
-  });
-  // @ts-ignore
-  fastify.use(vite.middlewares);
+  })
+  // use vite's connect instance as middleware
+  app.use(vite.middlewares)
 } else {
-  // // @ts-ignore
-  // const compression = (await import('fastify-compress')).default;
-  // // @ts-ignore
-  // const serveStatic = (await import('fastify-static')).default;
-
-  // fastify.register(compression);
-  // fastify.register(serveStatic, {
-  //   root: path.join(process.cwd(), 'dist/assets'),
-  //   prefix: base,
-  //   // Serve static files without extensions
-  //   // extensions: ['html', 'js', 'css'], // Uncomment if needed
-  // });
 }
 
 // Serve HTML
-fastify.all('*', async (req, reply) => {
+app.use("*", async (req, reply) => {
   try {
-    // @ts-ignore
-    const url = req.raw.url.replace(base, '');
-
+    const url = req.originalUrl
     let template;
-    let render;
 
     if (!isProduction) {
-      // Always read fresh template in development
-      template = await fs.readFile('./index.html', 'utf-8');
+      template = await fs.readFile("./index.html", "utf-8");
       // @ts-ignore
       template = await vite.transformIndexHtml(url, template);
     } else {
@@ -68,19 +61,36 @@ fastify.all('*', async (req, reply) => {
       // render = (await import('./dist/server/entry-server.js')).render;
     }
 
+    const platformAPI = createPlatformAPI({
+      envSpecificAPIs: {
+        window: createWindowApi(),
+      },
+    });
+
     const rendered = renderToString(
-      <StaticRouter location={url}>
-        <Providers>
-          <App />
-        </Providers>
-      </StaticRouter>
-    )
+      <PlatformAPIContext.Provider value={platformAPI}>
+        <StaticRouter location={url}>
+          <Providers>
+            <App />
+          </Providers>
+        </StaticRouter>
+      </PlatformAPIContext.Provider>
+    );
 
-    const html = template
-      .replace(`<!--app-html-->`, rendered ?? '');
-      // .replace(`<!--app-head-->`, rendered.head ?? '')
+    const html = template.replace(`<!--app-html-->`, rendered ?? "").replace(
+      "<head>",
+      `<head>
+          <script>
+              window.__ENV__ = {
+                  NODE_ENV: '${process.env.NODE_ENV}',
+                  BASE: '${process.env.BASE}',
+                  API_DEV_SERVER: '${process.env.API_DEV_SERVER}',
+              };
+          </script>`
+    );
+    // .replace(`<!--app-head-->`, rendered.head ?? '')
 
-    reply.status(200).type('text/html').send(html);
+    reply.status(200).set({ 'Content-Type': 'text/html' }).end(html)
   } catch (e) {
     // @ts-ignore
     vite?.ssrFixStacktrace(e);
@@ -91,8 +101,6 @@ fastify.all('*', async (req, reply) => {
   }
 });
 
-// Start http server
-// @ts-ignore
-fastify.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log('http://localhost:3000')
 });

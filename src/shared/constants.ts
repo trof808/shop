@@ -1,7 +1,8 @@
-export const host =
-	import.meta.env.VITE_NODE_ENV === 'development'
-		? `${import.meta.env.VITE_API_DEV_SERVER}`
-		: `${import.meta.env.VITE_API_PROD_SERVER}`;
+// @ts-ignore
+const isDevelopment = typeof window !== 'undefined' ? window?.__ENV__?.NODE_ENV === 'development' : false;
+
+// @ts-ignore
+export const host = isDevelopment ? window?.__ENV__?.API_DEV_SERVER : '/';
 
 export const PagesRoutes = {
 	HOME: '/',

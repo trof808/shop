@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React from 'react';
 import { ReactQueryProvider } from './ReactQueryProvider';
 import { AuthProvider } from './AuthProvider';
 import { DataProvider } from './DataProvider';
@@ -11,16 +11,14 @@ interface Props {
 }
 
 export const Providers = ({ children }: Props) => (
-	<Router>
-		<ReactQueryProvider>
-			<AuthProvider browserStorage={cookieStorageInstance}>
-				<DataProvider>
-					<HeaderProvider>
-						{children}
-						<Toaster />
-					</HeaderProvider>
-				</DataProvider>
-			</AuthProvider>
-		</ReactQueryProvider>
-	</Router>
+	<ReactQueryProvider>
+		<AuthProvider browserStorage={cookieStorageInstance}>
+			<DataProvider>
+				<HeaderProvider>
+					{children}
+					<Toaster />
+				</HeaderProvider>
+			</DataProvider>
+		</AuthProvider>
+	</ReactQueryProvider>
 );

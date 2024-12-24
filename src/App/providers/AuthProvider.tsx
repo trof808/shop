@@ -1,3 +1,4 @@
+import React from 'react';
 import { createContext } from 'react';
 import { cookieExpirationTime, cookieTokenName } from '@/shared/constants';
 import { useAuthToast } from '@/entities/Auth/hooks/useAuthToast';
