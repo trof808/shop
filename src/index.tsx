@@ -15,6 +15,9 @@ const platformAPI = createPlatformAPI({
   },
 });
 
+// @ts-ignore
+console.log(window.data)
+
 hydrateRoot(
   document.getElementById("app") as HTMLElement,
   <PlatformAPIContext.Provider value={platformAPI}>

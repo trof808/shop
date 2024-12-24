@@ -69,13 +69,19 @@ app.use("*", async (req, reply) => {
     });
 
     // TODO
+    // Чтобы браузер красиво отрисовал, нужно подгрузить стили
+
+    // TODO
     // Перед тем как сформировать страницу для рендеринга
     // нужно получить все необходимые данные для отрисовки в зависимости от страницы
     // И отдать их внутрь дерева компонент, а также прокинуть в глобальный объект для фронта
 
+    // const products = getProductApi();
+
     const rendered = renderToString(
       <PlatformAPIContext.Provider value={platformAPI}>
         <StaticRouter location={url}>
+          {/* <Providers data={{ products }}> */}
           <Providers>
             <App />
           </Providers>
@@ -92,6 +98,9 @@ app.use("*", async (req, reply) => {
                   NODE_ENV: '${process.env.NODE_ENV}',
                   BASE: '${process.env.BASE}',
                   API_DEV_SERVER: '${process.env.API_DEV_SERVER}',
+              };
+              window.data = {
+                productsCount: 10 
               };
           </script>`
     );
