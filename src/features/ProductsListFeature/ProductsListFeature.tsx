@@ -3,6 +3,7 @@
 import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetMainPageProductsList } from './hooks/useGetMainPageProductsList';
 
+// export const ProductsListFeature = ({ defaultData }) => {
 export const ProductsListFeature = () => {
 	const {
 		products,
@@ -13,6 +14,7 @@ export const ProductsListFeature = () => {
 		handleRemoveFromBasket,
 		fetchNextPage,
 		hasNextPage,
+	// } = useGetMainPageProductsList({ defaultData });
 	} = useGetMainPageProductsList();
 
 	if (status === 'pending') {

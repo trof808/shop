@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { productMapping } from '../mapping/productsMapping';
 import { productsApiService } from '../services/productsApiService';
 
+// export const useGetProducts = ({ defaultData }) => {
 export const useGetProducts = () => {
 	const limit = 100;
 

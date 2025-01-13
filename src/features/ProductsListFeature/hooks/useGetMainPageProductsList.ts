@@ -3,6 +3,7 @@ import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager
 import { useGetProducts } from '@/entities/Products/hooks/useGetProducts';
 import { ProductId, ProductItemDataView } from '@/entities/Products/types';
 
+// export const useGetMainPageProductsList = ({ defaultData }) => {
 export const useGetMainPageProductsList = () => {
 	const { basketManager } = useGetBasketManager();
 	const { productsList, status, fetchNextPage, hasNextPage } = useGetProducts();

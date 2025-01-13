@@ -12,9 +12,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_PUBLIC_API_DEV_SERVER=http://localhost:8888/
-ENV NEXT_PUBLIC_API_PROD_SERVER=/
-ENV NODE_ENV=development
+ENV VITE_API_DEV_SERVER=http://localhost:8888/
+ENV VITE_API_PROD_SERVER=/
+ENV VITE_NODE_ENV=development
 
 # Экспортируем порт 3000 наружу
 EXPOSE 3000

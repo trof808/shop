@@ -1,7 +1,8 @@
-export const host =
-	process.env.NODE_ENV === 'development'
-		? `${process.env.NEXT_PUBLIC_API_DEV_SERVER}`
-		: `${process.env.NEXT_PUBLIC_API_PROD_SERVER}`;
+// @ts-ignore
+const isDevelopment = typeof window !== 'undefined' ? window?.__ENV__?.NODE_ENV === 'development' : false;
+
+// @ts-ignore
+export const host = isDevelopment ? window?.__ENV__?.API_DEV_SERVER : '/';
 
 export const PagesRoutes = {
 	HOME: '/',

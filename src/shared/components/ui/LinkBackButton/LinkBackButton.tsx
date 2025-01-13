@@ -1,15 +1,16 @@
+import React from 'react';
 import { PagesRoutes } from '@/shared/constants';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router';
 
 interface Props {
 	href: string;
 }
 
 export const LinkBackButton = ({ href = PagesRoutes.HOME }: Props) => {
-	const router = useRouter();
+	const navigate = useNavigate();
 
 	const handleBackButtonClick = () => {
-		router.push(href + location.search);
+		navigate(href + location.search);
 	};
 
 	return (

@@ -1,4 +1,4 @@
-'use client';
+import React from 'react';
 import { ReactQueryProvider } from './ReactQueryProvider';
 import { AuthProvider } from './AuthProvider';
 import { DataProvider } from './DataProvider';
@@ -10,6 +10,9 @@ interface Props {
 	children: React.ReactNode;
 }
 
+// Тут необходимо принимать все данные полученные от сервера и раскидывать по сторам и react-query
+// А также доставать все из глобавльного объекта и также раскидывать по сторам и reac-query
+// export const Providers = ({ children, data }: Props) => (
 export const Providers = ({ children }: Props) => (
 	<ReactQueryProvider>
 		<AuthProvider browserStorage={cookieStorageInstance}>

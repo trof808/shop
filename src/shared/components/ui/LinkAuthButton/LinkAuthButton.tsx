@@ -1,4 +1,5 @@
-import Link from 'next/link';
+import React from 'react';
+import { Link } from 'react-router';
 
 interface Props {
 	isAuthorized: boolean;
@@ -32,14 +33,14 @@ export const LinkAuthButton = ({
 			<Link
 				data-testid='logIn'
 				className='rounded p-1 border-solid border-2 border-sky-300 transition duration-300 hover:bg-sky-300 hover:text-white'
-				href={logInRoute}
+				to={logInRoute}
 			>
 				Log in
 			</Link>
 			<Link
 				data-testid='signIn'
 				className='rounded p-1 border-solid border-2 border-sky-300 bg-sky-300 text-white transition-opacity hover:opacity-80'
-				href={registerRoute}
+				to={registerRoute}
 			>
 				Sign in
 			</Link>

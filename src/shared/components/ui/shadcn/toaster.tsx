@@ -1,5 +1,4 @@
-'use client';
-
+import React from 'react';
 import { useToast } from '@/shared/hooks/useToast';
 import {
 	Toast,

@@ -1,3 +1,4 @@
+import React from 'react';
 import { BasketButtonFeature } from '@/features/BasketButtonFeature/BasketButtonFeature';
 import { LinkToFiltersButton } from '@/features/LinkToFiltersButton/LinkToFiltersButton';
 import { ProductsListFeature } from '@/features/ProductsListFeature/ProductsListFeature';

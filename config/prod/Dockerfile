@@ -11,7 +11,7 @@ FROM deps AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-ENV NEXT_PUBLIC_API_PROD_SERVER=/api/
+ENV VITE_API_PROD_SERVER=/api/
 RUN yarn build
 
 FROM base AS runner
