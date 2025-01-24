@@ -1,35 +1,39 @@
 'use client';
 
+import React from 'react';
+import { ProductType } from '@/entities/Products/types';
 import { ProductsVirtualList } from './ProductsVirtualList';
 import { useGetMainPageProductsList } from './hooks/useGetMainPageProductsList';
 
-// export const ProductsListFeature = ({ defaultData }) => {
-export const ProductsListFeature = () => {
-	const {
-		products,
-		status,
-		canAdd,
-		canRemove,
-		handleAddToBasket,
-		handleRemoveFromBasket,
-		fetchNextPage,
-		hasNextPage,
-	// } = useGetMainPageProductsList({ defaultData });
-	} = useGetMainPageProductsList();
+interface Props {
+  ssrProducts: ProductType[];
+}
 
-	if (status === 'pending') {
-		return 'loading...';
-	}
+export const ProductsListFeature = ({ ssrProducts }: Props) => {
+  const {
+    products,
+    status,
+    canAdd,
+    canRemove,
+    handleAddToBasket,
+    handleRemoveFromBasket,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetMainPageProductsList({ ssrProducts });
 
-	return (
-		<ProductsVirtualList
-			products={products}
-			canAdd={canAdd}
-			canRemove={canRemove}
-			addToBasket={handleAddToBasket}
-			removeFromBasket={handleRemoveFromBasket}
-			fetchNextPage={fetchNextPage}
-			hasNextPage={hasNextPage}
-		/>
-	);
+  if (status === 'pending') {
+    return 'loading...';
+  }
+
+  return (
+    <ProductsVirtualList
+      products={products}
+      canAdd={canAdd}
+      canRemove={canRemove}
+      addToBasket={handleAddToBasket}
+      removeFromBasket={handleRemoveFromBasket}
+      fetchNextPage={fetchNextPage}
+      hasNextPage={hasNextPage}
+    />
+  );
 };

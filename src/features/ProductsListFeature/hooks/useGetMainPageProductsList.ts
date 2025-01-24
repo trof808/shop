@@ -1,58 +1,67 @@
 import { useCallback, useMemo } from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
 import { useGetProducts } from '@/entities/Products/hooks/useGetProducts';
-import { ProductId, ProductItemDataView } from '@/entities/Products/types';
+import {
+  ProductId,
+  ProductItemDataView,
+  ProductType,
+} from '@/entities/Products/types';
 
-// export const useGetMainPageProductsList = ({ defaultData }) => {
-export const useGetMainPageProductsList = () => {
-	const { basketManager } = useGetBasketManager();
-	const { productsList, status, fetchNextPage, hasNextPage } = useGetProducts();
+interface Props {
+  ssrProducts: ProductType[];
+}
 
-	const products: ProductItemDataView[] = useMemo(() => {
-		if (productsList.length) {
-			return productsList.map(item => ({
-				description: item.description,
-				title: item.title,
-				price: item.price,
-				id: item.id,
-				countInBasket: basketManager.basket.getProductCountById(item.id),
-			}));
-		}
+export const useGetMainPageProductsList = ({ ssrProducts }: Props) => {
+  const { basketManager } = useGetBasketManager();
+  const { productsList, status, fetchNextPage, hasNextPage } = useGetProducts({
+    ssrProducts,
+  });
 
-		return [];
-	}, [productsList, basketManager]);
+  const products: ProductItemDataView[] = useMemo(() => {
+    if (productsList.length) {
+      return productsList.map(item => ({
+        description: item.description,
+        title: item.title,
+        price: item.price,
+        id: item.id,
+        countInBasket: basketManager.basket.getProductCountById(item.id),
+      }));
+    }
 
-	const findProductById = useCallback(
-		(id: ProductId) => {
-			return productsList.find(p => p.id === id);
-		},
-		[productsList]
-	);
+    return [];
+  }, [productsList, basketManager]);
 
-	const handleAddToBasket = useCallback(
-		(id: ProductId) => {
-			const product = findProductById(id);
-			if (!!product) basketManager.handleAddItemToBasket(product);
-		},
-		[basketManager, findProductById]
-	);
+  const findProductById = useCallback(
+    (id: ProductId) => {
+      return productsList.find(p => p.id === id);
+    },
+    [productsList]
+  );
 
-	const handleRemoveFromBasket = useCallback(
-		(id: ProductId) => {
-			const product = findProductById(id);
-			if (!!product) basketManager.handleRemoveItemFromBasket(product);
-		},
-		[basketManager, findProductById]
-	);
+  const handleAddToBasket = useCallback(
+    (id: ProductId) => {
+      const product = findProductById(id);
+      if (!!product) basketManager.handleAddItemToBasket(product);
+    },
+    [basketManager, findProductById]
+  );
 
-	return {
-		products,
-		status,
-		canAdd: basketManager.basket.canAdd,
-		canRemove: basketManager.basket.canRemove,
-		handleRemoveFromBasket,
-		handleAddToBasket,
-		fetchNextPage,
-		hasNextPage,
-	};
+  const handleRemoveFromBasket = useCallback(
+    (id: ProductId) => {
+      const product = findProductById(id);
+      if (!!product) basketManager.handleRemoveItemFromBasket(product);
+    },
+    [basketManager, findProductById]
+  );
+
+  return {
+    products,
+    status,
+    canAdd: basketManager.basket.canAdd,
+    canRemove: basketManager.basket.canRemove,
+    handleRemoveFromBasket,
+    handleAddToBasket,
+    fetchNextPage,
+    hasNextPage,
+  };
 };

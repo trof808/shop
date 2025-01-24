@@ -1,31 +1,32 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import React from 'react';
-import { renderToString } from "react-dom/server"; // Используем нативный метод renderToString
-import { StaticRouter } from "react-router"; // Исправляем импорт StaticRouter
-import { App } from "../src/App/App"; // Импортируем компонент App
-import { Providers } from "../src/App/providers";
-import dotenv from "dotenv";
-import { createPlatformAPI } from "../infrastructure/platform";
-import { createWindowApi } from "../infrastructure/platform/window/server";
-import { PlatformAPIContext } from "../infrastructure/platform/shared/context";
-import express from 'express'
+import { renderToString } from 'react-dom/server'; // Используем нативный метод renderToString
+import { StaticRouter } from 'react-router'; // Исправляем импорт StaticRouter
+import { App } from '../src/App/App'; // Импортируем компонент App
+import { Providers } from '../src/App/providers';
+import dotenv from 'dotenv';
+import { createPlatformAPI } from '../infrastructure/platform';
+import { createWindowApi } from '../infrastructure/platform/window/server';
+import { PlatformAPIContext } from '../infrastructure/platform/shared/context';
+import axios from 'axios';
+import express from 'express';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
-const base = process.env.BASE || "/";
+const base = process.env.BASE || '/';
 
 const templateHtml = isProduction
-  ? await fs.readFile("./dist/client/index.html", "utf-8")
-  : "";
+  ? await fs.readFile('./dist/client/index.html', 'utf-8')
+  : '';
 
-const app = express()
+const app = express();
 
 //@ts-ignore
 let vite;
-console.log("isProduction", isProduction);
+console.log('isProduction', isProduction);
 if (!isProduction) {
   vite = await (
     await import('vite')
@@ -40,20 +41,20 @@ if (!isProduction) {
       },
     },
     appType: 'custom',
-  })
+  });
   // use vite's connect instance as middleware
-  app.use(vite.middlewares)
+  app.use(vite.middlewares);
 } else {
 }
 
 // Serve HTML
-app.use("*", async (req, reply) => {
+app.use('*', async (req, reply) => {
   try {
-    const url = req.originalUrl
+    const url = req.originalUrl;
     let template;
 
     if (!isProduction) {
-      template = await fs.readFile("./index.html", "utf-8");
+      template = await fs.readFile('./index.html', 'utf-8');
       // @ts-ignore
       template = await vite.transformIndexHtml(url, template);
     } else {
@@ -76,13 +77,14 @@ app.use("*", async (req, reply) => {
     // нужно получить все необходимые данные для отрисовки в зависимости от страницы
     // И отдать их внутрь дерева компонент, а также прокинуть в глобальный объект для фронта
 
-    // const products = getProductApi();
+    const products = await axios.get(
+      'http://localhost:8888/api/products/search?limit=100&page=1'
+    );
 
     const rendered = renderToString(
       <PlatformAPIContext.Provider value={platformAPI}>
         <StaticRouter location={url}>
-          {/* <Providers data={{ products }}> */}
-          <Providers>
+          <Providers serverData={products?.data?.products}>
             <App />
           </Providers>
         </StaticRouter>
@@ -90,8 +92,8 @@ app.use("*", async (req, reply) => {
     );
 
     // TODO: В глобальный объект window необходимо прокинуть все данные, которые получили с api
-    const html = template.replace(`<!--app-html-->`, rendered ?? "").replace(
-      "<head>",
+    const html = template.replace(`<!--app-html-->`, rendered ?? '').replace(
+      '<head>',
       `<head>
           <script>
               window.__ENV__ = {
@@ -100,13 +102,13 @@ app.use("*", async (req, reply) => {
                   API_DEV_SERVER: '${process.env.API_DEV_SERVER}',
               };
               window.data = {
-                productsCount: 10 
+                products: ${JSON.stringify(products?.data?.products)}
               };
           </script>`
     );
     // .replace(`<!--app-head-->`, rendered.head ?? '')
 
-    reply.status(200).set({ 'Content-Type': 'text/html' }).end(html)
+    reply.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     // @ts-ignore
     vite?.ssrFixStacktrace(e);
@@ -118,5 +120,5 @@ app.use("*", async (req, reply) => {
 });
 
 app.listen(3000, () => {
-  console.log('http://localhost:3000')
+  console.log('http://localhost:3000');
 });

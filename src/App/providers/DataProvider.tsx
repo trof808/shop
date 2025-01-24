@@ -1,16 +1,30 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { createContext, useEffect } from 'react';
 import { useGetBasketManager } from '@/entities/Basket/hooks/useGetBasketManager';
 import { useAuth } from '@/entities/Auth/hooks/useAuth';
+import { ProductType } from '@/entities/Products/types';
 
-export const DataProvider = ({ children }: { children: React.ReactNode }) => {
-	const { isAuthorized } = useAuth();
-	const { basketManager } = useGetBasketManager();
+export const DataContext = createContext<{ ssrProducts: ProductType[] }>({
+  ssrProducts: [],
+});
 
-	useEffect(() => {
-		basketManager.restoreBasket();
-	}, [isAuthorized]);
+interface Props {
+  children: React.ReactNode;
+  ssrProducts: ProductType[];
+}
 
-	return <>{children}</>;
+export const DataProvider = ({ children, ssrProducts }: Props) => {
+  const { isAuthorized } = useAuth();
+  const { basketManager } = useGetBasketManager();
+
+  useEffect(() => {
+    basketManager.restoreBasket();
+  }, [isAuthorized]);
+
+  return (
+    <DataContext.Provider value={{ ssrProducts } ?? []}>
+      {children}
+    </DataContext.Provider>
+  );
 };
